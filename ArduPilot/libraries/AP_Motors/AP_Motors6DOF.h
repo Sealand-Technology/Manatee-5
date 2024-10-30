@@ -61,11 +61,12 @@ protected:
     float               get_current_limit_max_throttle() override;
 
     //Override MotorsMatrix method
-    void add_motor_raw_6dof(int8_t motor_num, float roll_fac, float pitch_fac, float yaw_fac, float climb_fac, float forward_fac, float lat_fac, uint8_t testing_order);
+    void add_motor_raw_6dof(int8_t motor_num, float roll_fac, float pitch_fac, float yaw_fac, float throttle_fac, float forward_fac, float lat_fac, float walkForward_fac, float walkLateral_fac, uint8_t testing_order);
 
     void output_armed_stabilizing() override;
     void output_armed_stabilizing_vectored();
     void output_armed_stabilizing_vectored_6dof();
+    void output_armed_stabilizing_custom();
 
     // Parameters
     AP_Int8             _motor_reverse[AP_MOTORS_MAX_NUM_MOTORS];
@@ -74,6 +75,8 @@ protected:
     float               _throttle_factor[AP_MOTORS_MAX_NUM_MOTORS]; // each motors contribution to throttle (climb/descent)
     float               _forward_factor[AP_MOTORS_MAX_NUM_MOTORS]; // each motors contribution to forward/backward
     float               _lateral_factor[AP_MOTORS_MAX_NUM_MOTORS];  // each motors contribution to lateral (left/right)
+    float               _walkForward_factor[AP_MOTORS_MAX_NUM_MOTORS]; // each motors contribution to walk forward/walk backward
+    float               _walkLateral_factor[AP_MOTORS_MAX_NUM_MOTORS];// each motors contribution to lateral (walk left/walk right)
 
     // current limiting
     float _output_limited = 1.0f;

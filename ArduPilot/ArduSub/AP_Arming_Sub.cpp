@@ -7,7 +7,11 @@ bool AP_Arming_Sub::rc_calibration_checks(bool display_failure)
         sub.channel_roll,
         sub.channel_pitch,
         sub.channel_throttle,
-        sub.channel_yaw
+        sub.channel_yaw,
+        sub.channel_lateral,
+        sub.channel_forward,
+        sub.channel_walkLateral,
+        sub.channel_walkForward,
     };
     return rc_checks_copter_sub(display_failure, channels);
 }
@@ -197,9 +201,6 @@ bool AP_Arming_Sub::disarm()
     // disable gps velocity based centrefugal force compensation
     ahrs.set_correct_centrifugal(false);
     hal.util->set_soft_armed(false);
-
-    // clear input holds
-    sub.clear_input_hold();
-
+    
     return true;
 }

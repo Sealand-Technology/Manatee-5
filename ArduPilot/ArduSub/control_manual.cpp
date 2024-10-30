@@ -33,4 +33,6 @@ void Sub::manual_run()
     motors.set_throttle(channel_throttle->norm_input());
     motors.set_forward(channel_forward->norm_input());
     motors.set_lateral(channel_lateral->norm_input());
+    motors.set_walkForward(channel_walkForward->norm_input());
+    motors.set_walkLateral(channel_walkLateral->norm_input());
 }

@@ -42,4 +42,6 @@ void Sub::stabilize_run()
     //radio_in is raw pwm value
     motors.set_forward(channel_forward->norm_input());
     motors.set_lateral(channel_lateral->norm_input());
+    motors.set_walkForward(channel_walkForward->norm_input());
+    motors.set_walkLateral(channel_walkLateral->norm_input());
 }

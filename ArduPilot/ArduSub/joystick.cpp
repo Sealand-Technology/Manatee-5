@@ -9,11 +9,9 @@ float cam_tilt = 1500.0;
 float cam_pan = 1500.0;
 int16_t lights1 = 1100;
 int16_t lights2 = 1100;
-int16_t rollTrim = 0;
-int16_t pitchTrim = 0;
 int16_t zTrim = 0;
-int16_t xTrim = 0;
-int16_t yTrim = 0;
+// int16_t xTrim = 0;
+// int16_t yTrim = 0;
 int16_t video_switch = 1100;
 int16_t x_last, y_last, z_last;
 uint16_t buttons_prev;
@@ -32,8 +30,8 @@ void Sub::init_joystick()
 {
     default_js_buttons();
 
-    lights1 = RC_Channels::rc_channel(8)->get_radio_min();
-    lights2 = RC_Channels::rc_channel(9)->get_radio_min();
+    lights1 = RC_Channels::rc_channel(10)->get_radio_min();
+    lights2 = RC_Channels::rc_channel(11)->get_radio_min();
 
     set_mode(MANUAL, MODE_REASON_TX_COMMAND); // Initialize flight mode
 
@@ -51,7 +49,7 @@ void Sub::init_joystick()
     gain = constrain_float(gain, 0.1, 1.0);
 }
 
-void Sub::transform_manual_control_to_rc_override(int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons)
+void Sub::transform_manual_control_to_rc_override(int16_t x, int16_t y, int16_t z, int16_t r, int16_t rx, int16_t ry, int16_t rz, int16_t rr, uint16_t buttons)
 {
 
     float rpyScale = 0.4*gain; // Scale -1000-1000 to -400-400 with gain
@@ -85,53 +83,37 @@ void Sub::transform_manual_control_to_rc_override(int16_t x, int16_t y, int16_t 
 
     buttons_prev = buttons;
 
-    // attitude mode:
-    if (roll_pitch_flag == 1) {
-    // adjust roll/pitch trim with joystick input instead of forward/lateral
-        pitchTrim = -x * rpyScale;
-        rollTrim  =  y * rpyScale;
-    }
-
     uint32_t tnow = AP_HAL::millis();
 
     int16_t zTot;
-    int16_t yTot;
-    int16_t xTot;
+    // int16_t yTot;
+    // int16_t xTot;
 
     if (!controls_reset_since_input_hold) {
         zTot = zTrim + 500; // 500 is neutral for throttle
-        yTot = yTrim;
-        xTot = xTrim;
+        // yTot = yTrim;
+        // xTot = xTrim;
         // if all 3 axes return to neutral, than we're ready to accept input again
         controls_reset_since_input_hold = (abs(z - 500) < 50) && (abs(y) < 50) && (abs(x) < 50);
     } else {
         zTot = z + zTrim;
-        yTot = y + yTrim;
-        xTot = x + xTrim;
+        // yTot = y + yTrim;
+        // xTot = x + xTrim;
     }
 
-    RC_Channels::set_override(0, constrain_int16(pitchTrim + rpyCenter,1100,1900), tnow); // pitch
-    RC_Channels::set_override(1, constrain_int16(rollTrim  + rpyCenter,1100,1900), tnow); // roll
-
+    RC_Channels::set_override(0, constrain_int16(x*rpyScale+rpyCenter,1100,1900), tnow); // pitch
+    RC_Channels::set_override(1, constrain_int16(y*rpyScale+rpyCenter,1100,1900), tnow); // roll
     RC_Channels::set_override(2, constrain_int16((zTot)*throttleScale+throttleBase,1100,1900), tnow); // throttle
-    RC_Channels::set_override(3, constrain_int16(r*rpyScale+rpyCenter,1100,1900), tnow);                 // yaw
-
-    // maneuver mode:
-    if (roll_pitch_flag == 0) {
-        // adjust forward and lateral with joystick input instead of roll and pitch
-        RC_Channels::set_override(4, constrain_int16((xTot)*rpyScale+rpyCenter,1100,1900), tnow); // forward for ROV
-        RC_Channels::set_override(5, constrain_int16((yTot)*rpyScale+rpyCenter,1100,1900), tnow); // lateral for ROV
-    } else {
-        // neutralize forward and lateral input while we are adjusting roll and pitch
-        RC_Channels::set_override(4, constrain_int16(xTrim*rpyScale+rpyCenter,1100,1900), tnow); // forward for ROV
-        RC_Channels::set_override(5, constrain_int16(yTrim*rpyScale+rpyCenter,1100,1900), tnow); // lateral for ROV
-    }
-
-    RC_Channels::set_override(6, cam_pan, tnow);       // camera pan
-    RC_Channels::set_override(7, cam_tilt, tnow);      // camera tilt
-    RC_Channels::set_override(8, lights1, tnow);       // lights 1
-    RC_Channels::set_override(9, lights2, tnow);       // lights 2
-    RC_Channels::set_override(10, video_switch, tnow); // video switch
+    RC_Channels::set_override(3, constrain_int16(r*rpyScale+rpyCenter,1100,1900), tnow);              // yaw
+    RC_Channels::set_override(4, constrain_int16(rx*rpyScale+rpyCenter,1100,1900), tnow); // forward
+    RC_Channels::set_override(5, constrain_int16(ry*rpyScale+rpyCenter,1100,1900), tnow); // lateral
+    RC_Channels::set_override(6, constrain_int16(rz*rpyScale+rpyCenter,1100,1900), tnow); // forward walk
+    RC_Channels::set_override(7, constrain_int16(rr*rpyScale+rpyCenter,1100,1900), tnow); // lateral walk
+    RC_Channels::set_override(9, cam_pan, tnow);       // camera pan
+    RC_Channels::set_override(10, cam_tilt, tnow);     // camera tilt
+    RC_Channels::set_override(11, lights1, tnow);      // lights 1
+    RC_Channels::set_override(12, lights2, tnow);      // lights 2
+    RC_Channels::set_override(13, video_switch, tnow); // video switch
 
     // Store old x, y, z values for use in input hold logic
     x_last = x;
@@ -165,6 +147,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         break;
     case JSButton::button_function_t::k_disarm:
         arming.disarm();
+        zTrim = 0;
         break;
 
     case JSButton::button_function_t::k_mode_manual:
@@ -191,6 +174,8 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
     case JSButton::button_function_t::k_mode_poshold:
         set_mode(POSHOLD, MODE_REASON_TX_COMMAND);
         break;
+    case JSButton::button_function_t::k_mode_stick:
+        set_mode(STICK,MODE_REASON_TX_COMMAND);
 
     case JSButton::button_function_t::k_mount_center:
 #if MOUNT == ENABLED
@@ -229,7 +214,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
     case JSButton::button_function_t::k_lights1_cycle:
         if (!held) {
             static bool increasing = true;
-            RC_Channel* chan = RC_Channels::rc_channel(8);
+            RC_Channel* chan = RC_Channels::rc_channel(10);
             uint16_t min = chan->get_radio_min();
             uint16_t max = chan->get_radio_max();
             uint16_t step = (max - min) / g.lights_steps;
@@ -245,7 +230,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         break;
     case JSButton::button_function_t::k_lights1_brighter:
         if (!held) {
-            RC_Channel* chan = RC_Channels::rc_channel(8);
+            RC_Channel* chan = RC_Channels::rc_channel(10);
             uint16_t min = chan->get_radio_min();
             uint16_t max = chan->get_radio_max();
             uint16_t step = (max - min) / g.lights_steps;
@@ -254,7 +239,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         break;
     case JSButton::button_function_t::k_lights1_dimmer:
         if (!held) {
-            RC_Channel* chan = RC_Channels::rc_channel(8);
+            RC_Channel* chan = RC_Channels::rc_channel(10);
             uint16_t min = chan->get_radio_min();
             uint16_t max = chan->get_radio_max();
             uint16_t step = (max - min) / g.lights_steps;
@@ -264,7 +249,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
     case JSButton::button_function_t::k_lights2_cycle:
         if (!held) {
             static bool increasing = true;
-            RC_Channel* chan = RC_Channels::rc_channel(9);
+            RC_Channel* chan = RC_Channels::rc_channel(11);
             uint16_t min = chan->get_radio_min();
             uint16_t max = chan->get_radio_max();
             uint16_t step = (max - min) / g.lights_steps;
@@ -280,7 +265,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         break;
     case JSButton::button_function_t::k_lights2_brighter:
         if (!held) {
-            RC_Channel* chan = RC_Channels::rc_channel(9);
+            RC_Channel* chan = RC_Channels::rc_channel(11);
             uint16_t min = chan->get_radio_min();
             uint16_t max = chan->get_radio_max();
             uint16_t step = (max - min) / g.lights_steps;
@@ -289,7 +274,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         break;
     case JSButton::button_function_t::k_lights2_dimmer:
         if (!held) {
-            RC_Channel* chan = RC_Channels::rc_channel(9);
+            RC_Channel* chan = RC_Channels::rc_channel(11);
             uint16_t min = chan->get_radio_min();
             uint16_t max = chan->get_radio_max();
             uint16_t step = (max - min) / g.lights_steps;
@@ -376,10 +361,10 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         }
         if (!held) {
             zTrim = abs(z_last-500) > 50 ? z_last-500 : 0;
-            xTrim = abs(x_last) > 50 ? x_last : 0;
-            yTrim = abs(y_last) > 50 ? y_last : 0;
+            // xTrim = abs(x_last) > 50 ? x_last : 0;
+            // yTrim = abs(y_last) > 50 ? y_last : 0;
             bool input_hold_engaged_last = input_hold_engaged;
-            input_hold_engaged = zTrim || xTrim || yTrim;
+            input_hold_engaged = zTrim;
             if (input_hold_engaged) {
                 gcs().send_text(MAV_SEVERITY_INFO,"#Input Hold Set");
             } else if (input_hold_engaged_last) {
@@ -587,12 +572,6 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
     }
         break;
 
-    case JSButton::button_function_t::k_roll_pitch_toggle:
-        if (!held) {
-            roll_pitch_flag = !roll_pitch_flag;
-        }
-        break;
-
     case JSButton::button_function_t::k_custom_1:
         // Not implemented
         break;
@@ -728,19 +707,7 @@ void Sub::set_neutral_controls()
 {
     uint32_t tnow = AP_HAL::millis();
 
-    for (uint8_t i = 0; i < 6; i++) {
+    for (uint8_t i = 0; i < 8; i++) {
         RC_Channels::set_override(i, 1500, tnow);
     }
-
-    // Clear pitch/roll trim settings
-    pitchTrim = 0;
-    rollTrim  = 0;
-}
-
-void Sub::clear_input_hold()
-{
-    xTrim = 0;
-    yTrim = 0;
-    zTrim = 0;
-    input_hold_engaged = false;
 }

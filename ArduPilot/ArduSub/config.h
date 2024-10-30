@@ -17,7 +17,7 @@
 # define MAIN_LOOP_SECONDS 0.0025f
 
 #ifndef SURFACE_DEPTH_DEFAULT
-# define SURFACE_DEPTH_DEFAULT -10.0f // pressure sensor reading 10cm depth means craft is considered surfaced
+# define SURFACE_DEPTH_DEFAULT -20.0f // pressure sensor reading 20cm depth means craft is considered surfaced
 #endif
 
 //////////////////////////////////////////////////////////////////////////////

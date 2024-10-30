@@ -166,6 +166,8 @@ private:
     RC_Channel *channel_yaw;
     RC_Channel *channel_forward;
     RC_Channel *channel_lateral;
+    RC_Channel *channel_walkForward;
+    RC_Channel *channel_walkLateral;
 
     AP_Logger logger;
 
@@ -573,6 +575,8 @@ private:
     void stabilize_run();
     bool manual_init(void);
     void manual_run();
+    bool stick_init(void);
+    void stick_run();
     void failsafe_sensors_check(void);
     void failsafe_crash_check();
     void failsafe_ekf_check(void);
@@ -604,12 +608,11 @@ private:
     void init_rc_out();
     void enable_motor_output();
     void init_joystick();
-    void transform_manual_control_to_rc_override(int16_t x, int16_t y, int16_t z, int16_t r, uint16_t buttons);
+    void transform_manual_control_to_rc_override(int16_t x, int16_t y, int16_t z, int16_t r, int16_t rx, int16_t ry, int16_t rz, int16_t rr, uint16_t buttons);
     void handle_jsbutton_press(uint8_t button,bool shift=false,bool held=false);
     void handle_jsbutton_release(uint8_t button, bool shift);
     JSButton* get_button(uint8_t index);
     void default_js_buttons(void);
-    void clear_input_hold();
     void read_barometer(void);
     void init_rangefinder(void);
     void read_rangefinder(void);

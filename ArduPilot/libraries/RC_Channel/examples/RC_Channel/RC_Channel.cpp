@@ -81,7 +81,7 @@ void setup()
 
     rc().channel(CH_5)->set_range(1000);
 
-    rc().channel(CH_6)->set_range(800);
+    rc().channel(CH_6)->set_range(1000);
 
     rc().channel(CH_7)->set_range(1000);
 

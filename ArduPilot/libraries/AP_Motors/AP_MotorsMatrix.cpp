@@ -455,6 +455,10 @@ void AP_MotorsMatrix::remove_motor(int8_t motor_num)
         _roll_factor[motor_num] = 0;
         _pitch_factor[motor_num] = 0;
         _yaw_factor[motor_num] = 0;
+        _forward_factor[motor_num] = 0;
+        _lateral_factor[motor_num] = 0;
+        _walkForward_factor[motor_num] = 0;
+        _walkLateral_factor[motor_num] = 0;
     }
 }
 

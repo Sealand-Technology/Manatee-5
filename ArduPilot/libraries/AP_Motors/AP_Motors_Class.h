@@ -92,6 +92,8 @@ public:
     void                set_throttle_filter_cutoff(float filt_hz) { _throttle_filter.set_cutoff_frequency(filt_hz); }
     void                set_forward(float forward_in) { _forward_in = forward_in; }; // range -1 ~ +1
     void                set_lateral(float lateral_in) { _lateral_in = lateral_in; };     // range -1 ~ +1
+    void                set_walkForward(float walkForward_in){ _walkForward_in = walkForward_in; };  // range -1 ~ +1
+    void                set_walkLateral(float walkLateral_in){ _walkLateral_in = walkLateral_in; };  // range -1 ~ +1
 
     // accessors for roll, pitch, yaw and throttle inputs to motors
     float               get_roll() const { return _roll_in; }
@@ -227,6 +229,8 @@ protected:
     float               _throttle_in;               // last throttle input from set_throttle caller
     float               _forward_in;                // last forward input from set_forward caller
     float               _lateral_in;                // last lateral input from set_lateral caller
+    float               _walkForward_in;            // last forward input from set_walk_forward caller
+    float               _walkLateral_in;            // last lateral input from set_walk_lateral caller
     float               _throttle_avg_max;          // last throttle input from set_throttle_avg_max
     LowPassFilterFloat  _throttle_filter;           // throttle input filter
     DesiredSpoolState   _spool_desired;             // desired spool state

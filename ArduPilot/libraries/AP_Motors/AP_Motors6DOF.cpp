@@ -130,77 +130,87 @@ void AP_Motors6DOF::setup_motors(motor_frame_class frame_class, motor_frame_type
 
     // hard coded config for supported frames
     switch ((sub_frame_t)frame_class) {
-        //                 Motor #              Roll Factor     Pitch Factor    Yaw Factor      Throttle Factor     Forward Factor      Lateral Factor  Testing Order
-    case SUB_FRAME_BLUEROV1:
-        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              -1.0f,          0,                  1.0f,               0,              1);
-        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,              2);
-        add_motor_raw_6dof(AP_MOTORS_MOT_3,     -0.5f,          0.5f,           0,              0.45f,              0,                  0,              3);
-        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0.5f,           0.5f,           0,              0.45f,              0,                  0,              4);
-        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              -1.0f,          0,              1.0f,               0,                  0,              5);
-        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -0.25f,         0,              0,              0,                  0,                  1.0f,           6);
+        //                 Motor #              Roll Factor     Pitch Factor    Yaw Factor      Throttle Factor    Forward Factor    Lateral Factor      Forward walk Factor    Lateral walk Factor   Testing Order
+        case SUB_FRAME_BLUEROV1:
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              -1.0f,          0,                  1.0f,               0,                      0,                      0,                 1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,                      0,                      0,                 2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     -0.5f,          0.5f,           0,              0.45f,              0,                  0,                      0,                      0,                 3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0.5f,           0.5f,           0,              0.45f,              0,                  0,                      0,                      0,                 4);
+        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              -1.0f,          0,              1.0f,               0,                  0,                      0,                      0,                 5);
+        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -0.25f,         0,              0,              0,                  0,                  1.0f,                   0,                      0,                 6);
         break;
 
     case SUB_FRAME_VECTORED_6DOF_90DEG:
-        add_motor_raw_6dof(AP_MOTORS_MOT_1,     1.0f,           1.0f,           0,              1.0f,               0,                  0,              1);
-        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,              2);
-        add_motor_raw_6dof(AP_MOTORS_MOT_3,     1.0f,           -1.0f,          0,              1.0f,               0,                  0,              3);
-        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0,              0,              0,              0,                  0,                  1.0f,           4);
-        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              0,              0,              0,                  0,                  1.0f,           5);
-        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -1.0f,          1.0f,           0,              1.0f,               0,                  0,              6);
-        add_motor_raw_6dof(AP_MOTORS_MOT_7,     0,              0,              -1.0f,          0,                  1.0f,               0,              7);
-        add_motor_raw_6dof(AP_MOTORS_MOT_8,     -1.0f,          -1.0f,          0,              1.0f,               0,                  0,              8);
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     1.0f,           1.0f,           0,              1.0f,               0,                  0,                      0,                      0,                 1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,                      0,                      0,                 2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     1.0f,           -1.0f,          0,              1.0f,               0,                  0,                      0,                      0,                 3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0,              0,              0,              0,                  0,                  1.0f,                   0,                      0,                 4);
+        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              0,              0,              0,                  0,                  1.0f,                   0,                      0,                 5);
+        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -1.0f,          1.0f,           0,              1.0f,               0,                  0,                      0,                      0,                 6);
+        add_motor_raw_6dof(AP_MOTORS_MOT_7,     0,              0,              -1.0f,          0,                  1.0f,               0,                      0,                      0,                 7);
+        add_motor_raw_6dof(AP_MOTORS_MOT_8,     -1.0f,          -1.0f,          0,              1.0f,               0,                  0,                      0,                      0,                 8);
         break;
 
     case SUB_FRAME_VECTORED_6DOF:
-        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              1.0f,           0,                  -1.0f,              1.0f,           1);
-        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              -1.0f,          0,                  -1.0f,              -1.0f,          2);
-        add_motor_raw_6dof(AP_MOTORS_MOT_3,     0,              0,              -1.0f,          0,                  1.0f,               1.0f,           3);
-        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0,              0,              1.0f,           0,                  1.0f,               -1.0f,          4);
-        add_motor_raw_6dof(AP_MOTORS_MOT_5,     1.0f,           -1.0f,          0,              -1.0f,              0,                  0,              5);
-        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -1.0f,          -1.0f,          0,              -1.0f,              0,                  0,              6);
-        add_motor_raw_6dof(AP_MOTORS_MOT_7,     1.0f,           1.0f,           0,              -1.0f,              0,                  0,              7);
-        add_motor_raw_6dof(AP_MOTORS_MOT_8,     -1.0f,          1.0f,           0,              -1.0f,              0,                  0,              8);
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              1.0f,           0,                  -1.0f,              1.0f,                   0,                      0,                 1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              -1.0f,          0,                  -1.0f,              -1.0f,                  0,                      0,                 2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     0,              0,              -1.0f,          0,                  1.0f,               1.0f,                   0,                      0,                 3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0,              0,              1.0f,           0,                  1.0f,               -1.0f,                  0,                      0,                 4);
+        add_motor_raw_6dof(AP_MOTORS_MOT_5,     1.0f,           -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 5);
+        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -1.0f,          -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 6);
+        add_motor_raw_6dof(AP_MOTORS_MOT_7,     1.0f,           1.0f,           0,              -1.0f,              0,                  0,                      0,                      0,                 7);
+        add_motor_raw_6dof(AP_MOTORS_MOT_8,     -1.0f,          1.0f,           0,              -1.0f,              0,                  0,                      0,                      0,                 8);
         break;
 
     case SUB_FRAME_VECTORED:
-        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              1.0f,           0,                  -1.0f,              1.0f,           1);
-        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              -1.0f,          0,                  -1.0f,              -1.0f,          2);
-        add_motor_raw_6dof(AP_MOTORS_MOT_3,     0,              0,              -1.0f,          0,                  1.0f,               1.0f,           3);
-        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0,              0,              1.0f,           0,                  1.0f,               -1.0f,          4);
-        add_motor_raw_6dof(AP_MOTORS_MOT_5,     1.0f,           0,              0,              -1.0f,              0,                  0,              5);
-        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -1.0f,          0,              0,              -1.0f,              0,                  0,              6);
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              1.0f,           0,                  -1.0f,              1.0f,                   0,                      0,                 1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              -1.0f,          0,                  -1.0f,              -1.0f,                  0,                      0,                 2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     0,              0,              -1.0f,          0,                  1.0f,               1.0f,                   0,                      0,                 3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_4,     0,              0,              1.0f,           0,                  1.0f,               -1.0f,                  0,                      0,                 4);
+        add_motor_raw_6dof(AP_MOTORS_MOT_5,     1.0f,           0,              0,              -1.0f,              0,                  0,                      0,                      0,                 5);
+        add_motor_raw_6dof(AP_MOTORS_MOT_6,     -1.0f,          0,              0,              -1.0f,              0,                  0,                      0,                      0,                 6);
         break;
 
     case SUB_FRAME_CUSTOM:
         // Put your custom motor setup here
-        //break;
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     -1.0f,          -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     1.0f,           -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     -1.0f,          1.0f,           0,              -1.0f,              0,                  0,                      0,                      0,                 3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_4,     1.0f,           1.0f,           0,              -1.0f,              0,                  0,                      0,                      0,                 4);
+        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              0,              1.0f,           0,                  1.0f,               0,                      0,                      0,                 5);
+        add_motor_raw_6dof(AP_MOTORS_MOT_6,     0,              0,              -1.0f,          0,                  1.0f,               0,                      0,                      0,                 6);
+        add_motor_raw_6dof(AP_MOTORS_MOT_7,     0,              0,              0,              0,                  0,                  0,                   1.0f,                      1.0f,              7);
+        add_motor_raw_6dof(AP_MOTORS_MOT_8,     0,              0,              0,              0,                  0,                  0,                   1.0f,                      -1.0f,             8);
+        break;
 
     case SUB_FRAME_SIMPLEROV_3:
-        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              -1.0f,          0,                  1.0f,               0,              1);
-        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,              2);
-        add_motor_raw_6dof(AP_MOTORS_MOT_3,     0,              0,              0,              -1.0f,              0,                  0,              3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              -1.0f,          0,                  1.0f,               0,                     0,                        0,                1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,                     0,                        0,                2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     0,              0,              0,              -1.0f,              0,                  0,                     0,                        0,                3);
         break;
     case SUB_FRAME_SIMPLEROV_4:
     case SUB_FRAME_SIMPLEROV_5:
     default:
-        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              -1.0f,          0,                  1.0f,               0,              1);
-        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,              2);
-        add_motor_raw_6dof(AP_MOTORS_MOT_3,     1.0f,           0,              0,              -1.0f,              0,                  0,              3);
-        add_motor_raw_6dof(AP_MOTORS_MOT_4,     -1.0f,          0,              0,              -1.0f,              0,                  0,              4);
-        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              0,              0,              0,                  0,                  1.0f,           5);
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     0,              0,              -1.0f,          0,                  1.0f,               0,                     0,                        0,                1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     0,              0,              1.0f,           0,                  1.0f,               0,                     0,                        0,                2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     1.0f,           0,              0,              -1.0f,              0,                  0,                     0,                        0,                3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_4,     -1.0f,          0,              0,              -1.0f,              0,                  0,                     0,                        0,                4);
+        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              0,              0,              0,                  0,                  1.0f,                  0,                        0,                5);
         break;
     }
 }
 
-void AP_Motors6DOF::add_motor_raw_6dof(int8_t motor_num, float roll_fac, float pitch_fac, float yaw_fac, float throttle_fac, float forward_fac, float lat_fac, uint8_t testing_order)
+void AP_Motors6DOF::add_motor_raw_6dof(int8_t motor_num, float roll_fac, float pitch_fac, float yaw_fac, float throttle_fac, float forward_fac, float lat_fac, float walkForward_fac , float walkLateral_fac, uint8_t testing_order)
 {
     //Parent takes care of enabling output and setting up masks
     add_motor_raw(motor_num, roll_fac, pitch_fac, yaw_fac, testing_order);
-
+    
     //These are additional parameters for an ROV
     _throttle_factor[motor_num] = throttle_fac;
     _forward_factor[motor_num] = forward_fac;
     _lateral_factor[motor_num] = lat_fac;
+    _walkForward_factor[motor_num] = walkForward_fac; 
+    _walkLateral_factor[motor_num] = walkLateral_fac;
 }
 
 // output_min - sends minimum values out to the motors
@@ -287,6 +297,8 @@ void AP_Motors6DOF::output_armed_stabilizing()
         output_armed_stabilizing_vectored();
     } else if ((sub_frame_t)_last_frame_class == SUB_FRAME_VECTORED_6DOF) {
         output_armed_stabilizing_vectored_6dof();
+    } else if ((sub_frame_t)_last_frame_class == SUB_FRAME_CUSTOM) {
+        output_armed_stabilizing_custom();
     } else {
         uint8_t i;                          // general purpose counter
         float   roll_thrust;                // roll thrust input value, +/- 1.0
@@ -550,6 +562,86 @@ void AP_Motors6DOF::output_armed_stabilizing_vectored_6dof()
             _thrust_rpyt_out[i] = constrain_float(_motor_reverse[i]*(rpt_out[i]/rpt_max + yfl_out[i]/yfl_max),-1.0f,1.0f);
         }
     }
+}
+
+void AP_Motors6DOF::output_armed_stabilizing_custom()
+{
+    uint8_t i;                          // general purpose counter
+    float   roll_thrust;                // roll thrust input value, +/- 1.0
+    float   pitch_thrust;               // pitch thrust input value, +/- 1.0
+    float   yaw_thrust;                 // yaw thrust input value, +/- 1.0
+    float   throttle_thrust;            // throttle thrust input value, +/- 1.0
+    float   forward_thrust;             // forward thrust input value, +/- 1.0
+    float   lateral_thrust;             // lateral thrust input value, +/- 1.0
+
+    float   walk_forward_thrust;        // walk forward thrust input value, +/- 1.0
+    float   walk_lateral_thrust;        // walk lateral thrust input value, +/- 1.0
+
+    roll_thrust = (_roll_in + _roll_in_ff);
+    pitch_thrust = (_pitch_in + _pitch_in_ff);
+    yaw_thrust = (_yaw_in + _yaw_in_ff);
+    throttle_thrust = get_throttle_bidirectional();
+    forward_thrust = _forward_in;
+    lateral_thrust = _lateral_in;
+
+    walk_forward_thrust = _walkForward_in;
+    walk_lateral_thrust = _walkLateral_in;
+
+    float rpy_out[AP_MOTORS_MAX_NUM_MOTORS]; // buffer so we don't have to multiply coefficients multiple times.
+    float linear_out[AP_MOTORS_MAX_NUM_MOTORS]; // 3 linear DOF mix for each motor
+    float walk_out[AP_MOTORS_MAX_NUM_MOTORS];
+
+    // initialize limits flags
+    limit.roll= false;
+    limit.pitch = false;
+    limit.yaw = false;
+    limit.throttle_lower = false;
+    limit.throttle_upper = false;
+
+    // sanity check throttle is above zero and below current limited throttle
+    if (throttle_thrust <= -_throttle_thrust_max) {
+        throttle_thrust = -_throttle_thrust_max;
+        limit.throttle_lower = true;
+    }
+
+    if (throttle_thrust >= _throttle_thrust_max) {
+        throttle_thrust = _throttle_thrust_max;
+        limit.throttle_upper = true;
+    }
+
+    // calculate roll, pitch and yaw for each motor
+    for (i=0; i<AP_MOTORS_MAX_NUM_MOTORS; i++) {
+        if (motor_enabled[i]) {
+            rpy_out[i] = roll_thrust * _roll_factor[i] +
+                         pitch_thrust * _pitch_factor[i] +
+                         yaw_thrust * _yaw_factor[i];
+        }
+    }
+
+    // calculate linear command for each motor
+    // linear factors should be 0.0 or 1.0 for now
+    for (i=0; i<AP_MOTORS_MAX_NUM_MOTORS; i++) {
+        if (motor_enabled[i]) {
+            linear_out[i] = throttle_thrust * _throttle_factor[i] +
+                            forward_thrust * _forward_factor[i] +
+                            lateral_thrust * _lateral_factor[i];
+        }
+    }
+
+    for (i=0; i<AP_MOTORS_MAX_NUM_MOTORS; i++) {
+        if (motor_enabled[i]) {
+            walk_out[i] =   walk_forward_thrust * _walkForward_factor[i] +
+                            walk_lateral_thrust * _walkLateral_factor[i];
+        }
+    }
+
+    // Calculate final output for each motor
+    for (i=0; i<AP_MOTORS_MAX_NUM_MOTORS; i++) {
+        if (motor_enabled[i]) {
+            _thrust_rpyt_out[i] = constrain_float(_motor_reverse[i]*(rpy_out[i] + linear_out[i] +walk_out[i]),-1.0f,1.0f);
+        }
+    }
+
 }
 
 Vector3f AP_Motors6DOF::get_motor_angular_factors(int motor_number) {

@@ -984,6 +984,7 @@
       <entry value="7" name="SUB_MODE_CIRCLE"/>
       <entry value="9" name="SUB_MODE_SURFACE"/>
       <entry value="16" name="SUB_MODE_POSHOLD"/>
+      <entry value="18" name="SUB_MODE_STICK"/>
       <entry value="19" name="SUB_MODE_MANUAL"/>
     </enum>
     <enum name="ROVER_MODE">

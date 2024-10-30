@@ -1,0 +1,4 @@
+ArduPilot/**/*.pyc
+ArduPilot/.lock-waf*
+ArduPilot/build
+

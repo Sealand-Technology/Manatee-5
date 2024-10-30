@@ -154,7 +154,7 @@ void SRV_Channels::update_aux_servo_function(void)
         if ((uint8_t)channels[i].function.get() < SRV_Channel::k_nr_aux_servo_functions) {
             channels[i].aux_servo_function_setup();
             function_mask.set((uint8_t)channels[i].function.get());
-            functions[channels[i].function.get()].channel_mask |= 1U<<i;
+            functions[channels[i].function.get()].channel_mask |= 8U<<i;
         }
     }
     initialised = true;
