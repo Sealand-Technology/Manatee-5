@@ -66,6 +66,8 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+//全新版本
+
 //数据发送格式
 //uint8_t TxMsgTimingData[4] = {
 ///*   Data[8]          */
