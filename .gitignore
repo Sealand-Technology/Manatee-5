@@ -2,6 +2,14 @@ ArduPilot/**/*.pyc
 ArduPilot/.lock-waf*
 ArduPilot/build
 
+Joystick/.vscode/keil-assistant.log
+Joystick/MDK-ARM/DebugConfig
+Joystick/MDK-ARM/RTE
+Joystick/MDK-ARM/LED
+Joystick/MDK-ARM/*.lst
+Joystick/MDK-ARM/*.23833
+Joystick/MDK-ARM/*.86130
+
 Transceiver/.vscode/keil-assistant.log
 Transceiver/MDK-ARM/DebugConfig
 Transceiver/MDK-ARM/RTE
