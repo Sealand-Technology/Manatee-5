@@ -2,3 +2,10 @@ ArduPilot/**/*.pyc
 ArduPilot/.lock-waf*
 ArduPilot/build
 
+Transceiver/.vscode/keil-assistant.log
+Transceiver/MDK-ARM/DebugConfig
+Transceiver/MDK-ARM/RTE
+Transceiver/MDK-ARM/Transceiver
+Transceiver/MDK-ARM/*.lst
+Transceiver/MDK-ARM/*.23833
+Transceiver/MDK-ARM/*.86130
