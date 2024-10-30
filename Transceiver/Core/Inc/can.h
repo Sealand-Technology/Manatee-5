@@ -1,0 +1,65 @@
+/* USER CODE BEGIN Header */
+/**
+  ******************************************************************************
+  * @file    can.h
+  * @brief   This file contains all the function prototypes for
+  *          the can.c file
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
+/* USER CODE END Header */
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __CAN_H__
+#define __CAN_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+
+/* USER CODE BEGIN Includes */
+
+#include "fmu.h"
+#include "motor.h"
+
+/* USER CODE END Includes */
+
+extern CAN_HandleTypeDef hcan;
+
+/* USER CODE BEGIN Private defines */
+
+/* USER CODE END Private defines */
+
+void MX_CAN_Init(void);
+
+/* USER CODE BEGIN Prototypes */
+
+extern int16_t joystick_axes_input[8];
+extern uint8_t joystick_buttons_row[8];
+
+void CAN1_Filter_Init(void);
+HAL_StatusTypeDef CAN1_Transmit(uint32_t ID, uint8_t Length, uint8_t *Data);
+HAL_StatusTypeDef CAN1_Receive(uint32_t *ID, uint8_t *Length, uint8_t *Data);
+uint8_t CAN1_ReceiveFlag(void);
+
+HAL_StatusTypeDef MyCAN_Transmit(CAN_TxHeaderTypeDef *TxMessage, uint8_t *Data);
+
+/* USER CODE END Prototypes */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __CAN_H__ */
+
