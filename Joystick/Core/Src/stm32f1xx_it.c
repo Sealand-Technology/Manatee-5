@@ -52,8 +52,8 @@
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-extern uint8_t data_ready;
-extern uint16_t ADC_data[ADC_CHANNELS_NUM];
+extern uint8_t ADC1_Data_Ready;
+extern uint16_t ADC_data[ADC_CHANNEL_NUM];
 
 /* USER CODE END 0 */
 
@@ -215,11 +215,7 @@ void DMA1_Channel1_IRQHandler(void)
   HAL_DMA_IRQHandler(&hdma_adc1);
   /* USER CODE BEGIN DMA1_Channel1_IRQn 1 */
 
-	data_ready = 1;
-//	ADC_data[1] = 4095 - ADC_data[1];
-//	ADC_data[3] = 4095 - ADC_data[3];
-//	ADC_data[4] = 4095 - ADC_data[4];
-//	ADC_data[7] = 4095 - ADC_data[7];
+	ADC1_Data_Ready = 1;
 	
   /* USER CODE END DMA1_Channel1_IRQn 1 */
 }

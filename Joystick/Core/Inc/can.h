@@ -30,8 +30,6 @@ extern "C" {
 
 /* USER CODE BEGIN Includes */
 
-#include "usart.h"
-
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan;
@@ -44,10 +42,10 @@ void MX_CAN_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
-HAL_StatusTypeDef Init_Filter(void);
-HAL_StatusTypeDef MyCAN_Transmit(CAN_TxHeaderTypeDef *TxMessage, uint8_t *Data);
-uint8_t MyCAN_ReceiveFlag(void);
-void MyCAN_Receive(CAN_RxHeaderTypeDef *RxMessage, uint8_t *Data);
+void CAN1_Filter_Init(void);
+HAL_StatusTypeDef CAN1_Transmit(CAN_TxHeaderTypeDef *TxHeader, uint8_t *Data);
+HAL_StatusTypeDef CAN1_Receive(uint32_t *ID, uint8_t *Length, uint8_t *Data);
+uint8_t CAN1_ReceiveFlag(void);
 
 /* USER CODE END Prototypes */
 

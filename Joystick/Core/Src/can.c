@@ -122,47 +122,91 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 
 /* USER CODE BEGIN 1 */
 
-HAL_StatusTypeDef Init_Filter(void)
+/**
+ * @brief  Initialize CAN1 filter to receive all messages.
+ * @retval None
+ */
+void CAN1_Filter_Init(void)
 {
-	CAN_FilterTypeDef CAN_FilterInitStructure;
-	CAN_FilterInitStructure.FilterBank=0;//???��????��a3?��??����?1y???�¡�?1y???�¡���12????13????
-	CAN_FilterInitStructure.FilterScale=CAN_FILTERSCALE_32BIT;
-	CAN_FilterInitStructure.FilterMode=CAN_FILTERMODE_IDMASK;
-	CAN_FilterInitStructure.FilterFIFOAssignment=CAN_FILTER_FIFO0;
-	CAN_FilterInitStructure.FilterIdHigh=0x600 << 5;
-	CAN_FilterInitStructure.FilterIdLow=0x607 << 5;
-	CAN_FilterInitStructure.FilterMaskIdHigh=0xFFFF;
-	CAN_FilterInitStructure.FilterMaskIdLow=0xFFFF;
-	CAN_FilterInitStructure.FilterActivation=CAN_FILTER_ENABLE;
-	 return	HAL_CAN_ConfigFilter(&hcan, &CAN_FilterInitStructure);
+  CAN_FilterTypeDef canFilterConfig;
+
+  // Configure the filter to receive all CAN messages
+  canFilterConfig.FilterActivation = ENABLE;
+  canFilterConfig.FilterMode = CAN_FILTERMODE_IDMASK;
+  canFilterConfig.FilterScale = CAN_FILTERSCALE_32BIT;
+  canFilterConfig.FilterIdHigh = 0x0000;
+  canFilterConfig.FilterIdLow = 0x0000;
+  canFilterConfig.FilterMaskIdHigh = 0x0000;
+  canFilterConfig.FilterMaskIdLow = 0x0000;
+  canFilterConfig.FilterFIFOAssignment = CAN_FILTER_FIFO0;
+  canFilterConfig.FilterBank = 0;
+
+  // Initialize the filter
+  if (HAL_CAN_ConfigFilter(&hcan, &canFilterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
 }
 
-HAL_StatusTypeDef MyCAN_Transmit(CAN_TxHeaderTypeDef *TxMessage, uint8_t *Data) {
-	uint32_t pTxMailbox;
-	return HAL_CAN_AddTxMessage(&hcan, TxMessage, Data, &pTxMailbox);
-}
-
-uint8_t MyCAN_ReceiveFlag(void)
+HAL_StatusTypeDef CAN1_Transmit(CAN_TxHeaderTypeDef *TxHeader, uint8_t *Data)
 {
-	uint32_t aaa=HAL_CAN_GetRxFifoFillLevel(&hcan, CAN_FILTER_FIFO0);
-	printf("aaa=%d\n", aaa);
-	if (HAL_CAN_GetRxFifoFillLevel(&hcan, CAN_FILTER_FIFO0) > 0)
-	{
-		return 1;
-	}
-	return 0;
+  uint32_t pTxMailbox;
+
+  return HAL_CAN_AddTxMessage(&hcan, TxHeader, Data, &pTxMailbox);
 }
 
-void MyCAN_Receive(CAN_RxHeaderTypeDef *RxMessage, uint8_t *Data) {
-	HAL_CAN_GetRxMessage(&hcan, CAN_FILTER_FIFO0, RxMessage, Data); 
+/**
+ * @brief  Receive a CAN message using CAN1.
+ * @param  ID: The identifier for the received CAN message (output parameter).
+ * @param  Length: Length of the received data (output parameter, 0 to 8 bytes).
+ * @param  Data: Pointer to the data array to store the received data.
+ * @retval HAL_StatusTypeDef: Status of the reception (HAL_OK, HAL_ERROR, etc.)
+ */
+HAL_StatusTypeDef CAN1_Receive(uint32_t *ID, uint8_t *Length, uint8_t *Data)
+{
+  CAN_RxHeaderTypeDef RxHeader;
+
+  // Wait until a new message is received and return status
+  HAL_StatusTypeDef status = HAL_CAN_GetRxMessage(&hcan, CAN_RX_FIFO0, &RxHeader, Data);
+  if (status != HAL_OK)
+  {
+    // Return the status in case of error
+    return status;
+  }
+
+  // Retrieve the standard identifier
+  if (RxHeader.IDE == CAN_ID_STD)
+  {
+    *ID = RxHeader.StdId;
+  }
+  else
+  {
+    // Handling for extended identifiers can be implemented here
+  }
+
+  // Retrieve the data length
+  *Length = RxHeader.DLC;
+
+  return HAL_OK;
+}
+
+/**
+ * @brief  Check if there are any CAN messages pending in FIFO0.
+ * @retval uint8_t: 1 if there are messages pending, 0 if no messages are pending.
+ */
+uint8_t CAN1_ReceiveFlag(void)
+{
+  // Check if there are any messages pending in FIFO0
+  if (HAL_CAN_GetRxFifoFillLevel(&hcan, CAN_RX_FIFO0) > 0)
+  {
+    return 1; // Message is pending
+  }
+  return 0; // No message is pending
 }
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-//	if( HAL_CAN_GetRxMessage(hcan, CAN_FILTER_FIFO0, &RxMsg, RxMsgData)==HAL_OK)
-//	{
-//		Receive_Flag = 1;
-//	}
+  
 }
 
 /* USER CODE END 1 */

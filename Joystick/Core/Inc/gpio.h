@@ -44,12 +44,8 @@ extern uint8_t KEY3_PressFlag;
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-void GPIO_Poll(uint16_t *p_button_state);
 
-uint8_t Get_KEY0_Flag(void);
-uint8_t Get_KEY1_Flag(void);
-uint8_t Get_KEY2_Flag(void);
-uint8_t Get_KEY3_Flag(void);
+void GPIO_Poll(uint16_t *buttons_state);
 
 /* USER CODE END Prototypes */
 

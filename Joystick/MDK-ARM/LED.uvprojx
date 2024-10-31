@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../MyApp</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -424,6 +424,11 @@
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>joystick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\joystick.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_it.c</FileName>
@@ -534,31 +539,6 @@
               <FileName>system_stm32f1xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/system_stm32f1xx.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>MyApp</GroupName>
-          <Files>
-            <File>
-              <FileName>joystick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\MyApp\joystick.c</FilePath>
-            </File>
-            <File>
-              <FileName>joystick.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\MyApp\joystick.h</FilePath>
-            </File>
-            <File>
-              <FileName>Transmit.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\MyApp\Transmit.c</FilePath>
-            </File>
-            <File>
-              <FileName>Transmit.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\MyApp\Transmit.h</FilePath>
             </File>
           </Files>
         </Group>

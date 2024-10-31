@@ -97,56 +97,20 @@ void Error_Handler(void);
 /* USER CODE BEGIN Private defines */
 
 
-#define MAX_CHANGE 50 // ��󵥴α仯��Χ
-#define DEAD_ZONE 30  // ������Χ
-#define STICK_ACTIVE_VAL 50 // ��ҡ�����ݱ仯�Ĵ�����������ֵ������Ϊҡ�˱�����
-#define STICK_STATIC_VAL -50 // ��ҡ�����ݲ��仯�Ĵ�����������ֵ������Ϊҡ�˾�ֹ
+#define MAX_CHANGE             50
+#define DEAD_ZONE              30
+#define STICK_ACTIVE_VAL       50
+#define STICK_STATIC_VAL      -50
 
-#define THROTTLE_ENABLED				1					// 1 for enabled, 0 for disabled
-#define RUDDER_ENABLED					1					// 1 for enabled, 0 for disabled
-#define JOYSTICK_AXIS_NUM				3
-#define SECONDARY_AXIS_NUM			3
+#define ADC_CHANNEL_NUM				  8
+#define AXIS_NUM							  8
+#define BUTTON_NUM						 14		
 
-#define BUTTONS_NUM							14
-#define LEDS_NUM								0
-
-/* END OF USER CODE AREA */
-
-
-
-/* DO NOT CHANGE CODE BELOW IF NOT SURE WHAT ARE YOU DOING */
-
-#define FILTER_WINDOW_SIZE			10
-
-#define ADC_CHANNELS_NUM				8
-
-
-#define AXIS_NUM								((THROTTLE_ENABLED) + (JOYSTICK_AXIS_NUM) \
-																+ (SECONDARY_AXIS_NUM) + (RUDDER_ENABLED))
-																
-#if (JOYSTICK_AXIS_NUM > 0)
-	#define JOYSTICK_AXIS_ENABLED  	1
-#else
-	#define JOYSTICK_AXIS_ENABLED  	0
-#endif
-
-#if (SECONDARY_AXIS_NUM > 0)
-	#define SECONDARY_AXIS_ENABLED  	1
-#else
-	#define SECONDARY_AXIS_ENABLED  	0
-#endif
-
-#if (BUTTONS_NUM > 0)
+#if (BUTTON_NUM > 0)
 	#define BUTTONS_ENABLED  	1
 #else
 	#define BUTTONS_ENABLED  	0
 #endif
-
-#define DEVICE_ID1					0x1FFFF7E8
-#define DEVICE_ID2					0x1FFFF7EA
-#define DEVICE_ID3					0x1FFFF7EC
-#define DEVICE_ID4					0x1FFFF7F0
-
 
 /* USER CODE END Private defines */
 
