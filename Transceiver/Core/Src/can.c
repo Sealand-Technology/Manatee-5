@@ -21,8 +21,11 @@
 #include "can.h"
 
 /* USER CODE BEGIN 0 */
-int16_t joystick_axes_input[8];
-uint8_t joystick_buttons_row[8];
+
+uint32_t can_id;
+uint8_t rx_data_length;
+uint8_t rx_data[8];
+
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan;
@@ -56,7 +59,7 @@ void MX_CAN_Init(void)
   }
   /* USER CODE BEGIN CAN_Init 2 */
 
-//  CAN1_Filter_Init();
+  CAN1_Filter_Init();
 
   /* USER CODE END CAN_Init 2 */
 
@@ -175,11 +178,6 @@ HAL_StatusTypeDef CAN1_Transmit(uint32_t ID, uint8_t Length, uint8_t *Data)
   return HAL_CAN_AddTxMessage(&hcan, &TxHeader, Data, &TxMailbox);
 }
 
-HAL_StatusTypeDef MyCAN_Transmit(CAN_TxHeaderTypeDef *TxMessage, uint8_t *Data) {
-	uint32_t pTxMailbox;
-	return HAL_CAN_AddTxMessage(&hcan, TxMessage, Data, &pTxMailbox);
-}
-
 /**
  * @brief  Receive a CAN message using CAN1.
  * @param  ID: The identifier for the received CAN message (output parameter).
@@ -232,45 +230,42 @@ uint8_t CAN1_ReceiveFlag(void)
 /**
  * @brief  Callback function for CAN1 receive interrupt.
  * @param  hcan: Pointer to a CAN_HandleTypeDef structure that contains
- *                the configuration information for the specified CAN.
+ *               the configuration information for the specified CAN.
  * @retval None
  */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-  uint32_t can_id;
-  uint8_t rx_data_length;
-  uint8_t rx_data[8];
   CAN1_Receive(&can_id, &rx_data_length, rx_data);
-  
-    /*收到按键数据帧*/
-  if (can_id == 0x300 )
-  {   
-	  for(int i = 0; i<8 ; i++)
-	  {
-		joystick_buttons_row[i] = rx_data[i];
-	  }	  
+
+  /*收到按键数据帧*/
+  if (can_id == 0x300)
+  {
+    for (int i = 0; i < 8; i++)
+    {
+      joystick_buttons_row[i] = rx_data[i];
+    }
   }
-			
+
   /*收到前4个电压值*/
-  if (can_id == 0x400 )
+  if (can_id == 0x400)
   {
-//	  	printf("report_data_Low success\r\n");	  
-	  for(int i = 0; i<4 ; i++)
-	  {
-		joystick_axes_input[i] = ((uint16_t)rx_data[i] << 8) | rx_data[i+4];
-	  }	  
+    //	  	printf("report_data_Low success\r\n");
+    for (int i = 0; i < 4; i++)
+    {
+      js_axes_in[i] = ((uint16_t)rx_data[i] << 8) | rx_data[i + 4];
+    }
   }
-  
-   /*收到后四个电压值*/
-  if (can_id == 0x500 )
+
+  /*收到后四个电压值*/
+  if (can_id == 0x500)
   {
-//	  	printf("report_data_High success\r\n");	  
-	  for(int i = 0; i<4 ; i++)
-	  {
-		joystick_axes_input[i+4] = ((uint16_t)rx_data[i] << 8) | rx_data[i+4];
-	  }  
+    //	  	printf("report_data_High success\r\n");
+    for (int i = 0; i < 4; i++)
+    {
+      js_axes_in[i + 4] = ((uint16_t)rx_data[i] << 8) | rx_data[i + 4];
+    }
   }
-	  
+
   // motorID = CAN_ID - 0x580
   can_id = can_id - 0x580U;
 
@@ -278,7 +273,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
   {
     if (can_id == Motor9.motorID)
     {
-	  
+
       Motor_Feedback_Handler(&Motor9, rx_data);
     }
     else if (can_id == Motor10.motorID)
@@ -287,16 +282,13 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     }
     else
     {
-//      printf("CAN1 received nonexistent motor id.\r\n");
+      //      printf("CAN1 received nonexistent motor id.\r\n");
     }
   }
   else
   {
-//	printf("CAN1 received the feedback data with wrong length.\r\n");
+    //	printf("CAN1 received the feedback data with wrong length.\r\n");
   }
-  	  
 }
 
-
-	
 /* USER CODE END 1 */

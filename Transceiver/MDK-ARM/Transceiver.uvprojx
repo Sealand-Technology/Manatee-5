@@ -336,7 +336,7 @@
               <MiscControls>--gnu</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Libraries/MAVLink;../Libraries/MAVLink/ardupilotmega;../Libraries/MAVLink/common;../Libraries/MAVLink/icarous;../Libraries/MAVLink/uAvionix;../Libraries/AQMD6008BLS-TE;../MyApp</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Libraries/MAVLink;../Libraries/MAVLink/ardupilotmega;../Libraries/MAVLink/common;../Libraries/MAVLink/icarous;../Libraries/MAVLink/uAvionix;../Libraries/AQMD6008BLS-TE</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -391,11 +391,6 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
-              <FileName>fmu.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\fmu.c</FilePath>
-            </File>
-            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -406,14 +401,24 @@
               <FilePath>../Core/Src/gpio.c</FilePath>
             </File>
             <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/usart.c</FilePath>
+            </File>
+            <File>
               <FileName>can.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/can.c</FilePath>
             </File>
             <File>
-              <FileName>usart.c</FileName>
+              <FileName>fmu.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../Core/Src/usart.c</FilePath>
+              <FilePath>..\Core\Src\fmu.c</FilePath>
+            </File>
+            <File>
+              <FileName>joystick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\joystick.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_it.c</FileName>
@@ -531,24 +536,9 @@
           <GroupName>Libraries/AQMD6008BLS-TE</GroupName>
           <Files>
             <File>
-              <FileName>motor.c</FileName>
+              <FileName>motor_driver.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Libraries\AQMD6008BLS-TE\motor.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>MyApp</GroupName>
-          <Files>
-            <File>
-              <FileName>Button.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\MyApp\Button.c</FilePath>
-            </File>
-            <File>
-              <FileName>Button.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\MyApp\Button.h</FilePath>
+              <FilePath>..\Libraries\AQMD6008BLS-TE\motor_driver.c</FilePath>
             </File>
           </Files>
         </Group>

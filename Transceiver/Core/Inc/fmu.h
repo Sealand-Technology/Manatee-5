@@ -7,32 +7,37 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32_mavlink.h"
-#include "Button.h"
 #include "can.h"
-
+#include "joystick.h"
+#include "stm32_mavlink.h"
 
 /* Defines ----------------------------------------------------------------*/
-
-//extern int16_t joystick_axes_input[8];
-//extern uint8_t joystick_buttons_row[8];
-//extern uint16_t joystick_buttons_input;
 	
-#define JOYSTICK_AXES_INPUT_MIN       0
-#define JOYSTICK_AXES_INPUT_MAX    4096
-#define JOYSTICK_AXES_OUTPUT_MIN  -1000
-#define JOYSTICK_AXES_OUTPUT_MAX   1000
 
-#define MAP_VALUE(val, in_min, in_max, out_min, out_max) (((val) - (in_min)) * ((out_max) - (out_min)) / ((in_max) - (in_min)) + (out_min))
-	
-extern volatile uint8_t joystick_input_status;
+
 
 /* Prototypes ----------------------------------------------------------------*/
+
+/**
+ * @brief  Maps an integer value from one range to another with improved precision.
+ *         Uses int32_t for intermediate calculations to reduce precision loss.
+ * @param  val: The input value to be mapped.
+ * @param  in_min: The minimum value of the input range.
+ * @param  in_max: The maximum value of the input range.
+ * @param  out_min: The minimum value of the output range.
+ * @param  out_max: The maximum value of the output range.
+ * @retval int16_t: The mapped value in the output range.
+ */
+static inline int16_t map_value(int16_t val, int16_t in_min, int16_t in_max, int16_t out_min, int16_t out_max)
+{
+  return (int32_t)(val - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 void FMU_MAVLink_Init(UART_HandleTypeDef *huart, mavlink_channel_t chan);
 
 void FMU_Send_Reboot_Msg(mavlink_channel_t chan);
 void FMU_Send_Arm_Msg(mavlink_channel_t chan);
-void FMU_Send_Manual_Control_Msg(mavlink_channel_t chan, int16_t *joystick_axes_input, uint16_t *joystick_buttons_input);
+void FMU_Send_Manual_Control_Msg(mavlink_channel_t chan, int16_t *js_axes_in, uint16_t *js_buttons_in);
 
 void FMU_Receive_Heartbeat_Msg(void);
 

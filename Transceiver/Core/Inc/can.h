@@ -31,7 +31,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 
 #include "fmu.h"
-#include "motor.h"
+#include "joystick.h"
+#include "motor_driver.h"
 
 /* USER CODE END Includes */
 
@@ -45,15 +46,10 @@ void MX_CAN_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 
-extern int16_t joystick_axes_input[8];
-extern uint8_t joystick_buttons_row[8];
-
 void CAN1_Filter_Init(void);
 HAL_StatusTypeDef CAN1_Transmit(uint32_t ID, uint8_t Length, uint8_t *Data);
 HAL_StatusTypeDef CAN1_Receive(uint32_t *ID, uint8_t *Length, uint8_t *Data);
 uint8_t CAN1_ReceiveFlag(void);
-
-HAL_StatusTypeDef MyCAN_Transmit(CAN_TxHeaderTypeDef *TxMessage, uint8_t *Data);
 
 /* USER CODE END Prototypes */
 

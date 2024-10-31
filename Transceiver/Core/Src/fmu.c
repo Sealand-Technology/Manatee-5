@@ -1,11 +1,5 @@
 #include "fmu.h"
 
-//int16_t joystick_axes_input[8] = {0, 0, 500, 0, 0, 0, 0, 0};
-//uint8_t joystick_buttons_row[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-
-// Status to track data reception (bit 0: first 4 joystick values, bit 1: last 4 joystick values, bit 2: buttons)
-volatile uint8_t joystick_input_status = 0;
-
 mavlink_heartbeat_t heartbeat_msg;
 mavlink_command_long_t cmd_long_msg;
 mavlink_manual_control_t manual_control_msg;
@@ -88,21 +82,21 @@ void FMU_Send_Arm_Msg(mavlink_channel_t chan)
 /**
  * @brief  Send the manual control message based on joystick input.
  * @param  chan: MAVLink channel to use for transmission.
- * @param  joystick_axes_input: Pointer to the array of 8 joystick axis values.
- * @param  joystick_buttons_input: Pointer to the joystick buttons input.
+ * @param  js_axes_in: Pointer to the array of 8 joystick axis values.
+ * @param  js_buttons_in: Pointer to the joystick buttons input.
  * @retval None
  */
-void FMU_Send_Manual_Control_Msg(mavlink_channel_t chan, int16_t *joystick_axes_input, uint16_t *joystick_buttons_input)
+void FMU_Send_Manual_Control_Msg(mavlink_channel_t chan, int16_t *js_axes_in, uint16_t *js_buttons_in)
 {
   // Map joystick axis values using the macro
-  manual_control_msg.x = MAP_VALUE(joystick_axes_input[0], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX);
-  manual_control_msg.y = MAP_VALUE(joystick_axes_input[1], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX);
-  manual_control_msg.z = MAP_VALUE(joystick_axes_input[2], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX) + 500;
-  manual_control_msg.r = MAP_VALUE(joystick_axes_input[3], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX);
-  manual_control_msg.rx = MAP_VALUE(joystick_axes_input[4], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX);
-  manual_control_msg.ry = MAP_VALUE(joystick_axes_input[5], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX);
-  manual_control_msg.rz = MAP_VALUE(joystick_axes_input[6], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX);
-  manual_control_msg.rr = MAP_VALUE(joystick_axes_input[7], JOYSTICK_AXES_INPUT_MIN, JOYSTICK_AXES_INPUT_MAX, JOYSTICK_AXES_OUTPUT_MIN, JOYSTICK_AXES_OUTPUT_MAX);
+  manual_control_msg.x = map_value(js_axes_in[0] + js_axes_trim_offset[0], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX);
+  manual_control_msg.y = map_value(js_axes_in[1] + js_axes_trim_offset[1], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX);
+  manual_control_msg.z = map_value(js_axes_in[2] + js_axes_trim_offset[2], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX) + 500;
+  manual_control_msg.r = map_value(js_axes_in[3] + js_axes_trim_offset[3], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX);
+  manual_control_msg.rx = map_value(js_axes_in[4] + js_axes_trim_offset[4], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX);
+  manual_control_msg.ry = map_value(js_axes_in[5] + js_axes_trim_offset[5], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX);
+  manual_control_msg.rz = map_value(js_axes_in[6] + js_axes_trim_offset[6], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX);
+  manual_control_msg.rr = map_value(js_axes_in[7] + js_axes_trim_offset[7], JS_AXES_IN_MIN, JS_AXES_IN_MAX, JS_AXES_OUT_MIN, JS_AXES_OUT_MAX);
 	
 //  manual_control_msg.x = 0;
 //  manual_control_msg.y = 0;
@@ -114,7 +108,7 @@ void FMU_Send_Manual_Control_Msg(mavlink_channel_t chan, int16_t *joystick_axes_
 //  manual_control_msg.rr = 1000;
 	
   // Assign joystick buttons input to manual control message
-  manual_control_msg.buttons = *joystick_buttons_input;
+  manual_control_msg.buttons = *js_buttons_in;
 
   // Set the target ID (e.g., 1 for default)
   manual_control_msg.target = 1;
