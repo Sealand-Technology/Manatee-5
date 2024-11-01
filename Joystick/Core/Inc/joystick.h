@@ -26,11 +26,9 @@ extern int8_t sticks_count[AXIS_NUM];
 
 /* Prototypes ----------------------------------------------------------------*/
 
-void joystick_init(void);
-void joystick_detect(void);
-
-void Transmit(void);
-void Transmit_detect(void);
+void JS_Init(void);
+void JS_Update(void);
+void JS_Transmit(void);
 
 #ifdef __cplusplus
 }

@@ -94,33 +94,11 @@ void MX_GPIO_Init(void)
 
 void GPIO_Poll(uint16_t *buttons_state)
 {
-	//  *buttons_state = 0x0000;
-	
-	//  *buttons_state ^= 0x3FFF;	因为这句，所以逻辑需要反着来
-	if (!KEY0_PressFlag) {
-        *buttons_state &= ~(1 << 0);  // 如果标志位为1，则设置第0位，
-    } else {
-		KEY0_PressFlag = 0;
-        *buttons_state |= (1 << 0); // 如果标志位为0，则清除第0位
-    }
-	if (!KEY1_PressFlag) {
-        *buttons_state &= ~(1 << 1);// 如果标志位为1，则设置第1位
-    } else {
-		KEY1_PressFlag = 0;
-        *buttons_state |= (1 << 1); // 如果标志位为0，则清除第1位
-    }
-	if (!KEY2_PressFlag) {
-        *buttons_state &= ~(1 << 2); // 如果标志位为1，则设置第2位
-    } else {
-		KEY2_PressFlag = 0;		
-        *buttons_state |= (1 << 2); // 如果标志位为0，则清除第2位
-    }
-	if (!KEY3_PressFlag) {
-        *buttons_state &= ~(1 << 3);// 如果标志位为1，则设置第3位
-    } else {
-		KEY3_PressFlag = 0;		
-        *buttons_state |= (1 << 3); // 如果标志位为0，则清除第3位
-    }	
+  *buttons_state = 0;
+  *buttons_state |= HAL_GPIO_ReadPin(KEY0_GPIO_Port, KEY0_Pin);
+  *buttons_state |= HAL_GPIO_ReadPin(KEY1_GPIO_Port, KEY1_Pin) << 1;
+  *buttons_state |= HAL_GPIO_ReadPin(KEY2_GPIO_Port, KEY2_Pin) << 2;
+  *buttons_state |= HAL_GPIO_ReadPin(KEY3_GPIO_Port, KEY3_Pin) << 3;
   *buttons_state |= HAL_GPIO_ReadPin(BTN5_GPIO_Port, BTN5_Pin) << 4;
   *buttons_state |= HAL_GPIO_ReadPin(BTN6_GPIO_Port, BTN6_Pin) << 5;
   *buttons_state |= HAL_GPIO_ReadPin(BTN7_GPIO_Port, BTN7_Pin) << 6;
@@ -131,40 +109,30 @@ void GPIO_Poll(uint16_t *buttons_state)
   *buttons_state |= HAL_GPIO_ReadPin(BTN12_GPIO_Port, BTN12_Pin) << 11;
   *buttons_state |= HAL_GPIO_ReadPin(BTN13_GPIO_Port, BTN13_Pin) << 12;
   *buttons_state |= HAL_GPIO_ReadPin(BTN14_GPIO_Port, BTN14_Pin) << 13;
-  *buttons_state ^= 0x3FF0;
+  *buttons_state ^= 0x3FFF;
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
- {
-	if(GPIO_Pin == KEY0_Pin)
-	{
-		KEY0_PressFlag = 1;
-	}
-	
-	if(GPIO_Pin == KEY1_Pin)
-	{
-		KEY1_PressFlag = 1;
-	}
-	
- 	if(GPIO_Pin == KEY2_Pin)
-	{
-		KEY2_PressFlag = 1;		
-	}
-	
-	if(GPIO_Pin == KEY3_Pin)
-	{
-		KEY3_PressFlag = 1;		
-	}
- }
- 
-// uint8_t Get_KEY0_Flag(void)
-//{
-//	if(KEY0_PressFlag == 1)
-//	{
-//		KEY0_PressFlag = 0;
-//		return 1;
-//	}
-//	return 0;
-//}
+{
+  if (GPIO_Pin == KEY0_Pin)
+  {
+    KEY0_PressFlag = 1;
+  }
+
+  if (GPIO_Pin == KEY1_Pin)
+  {
+    KEY1_PressFlag = 1;
+  }
+
+  if (GPIO_Pin == KEY2_Pin)
+  {
+    KEY2_PressFlag = 1;
+  }
+
+  if (GPIO_Pin == KEY3_Pin)
+  {
+    KEY3_PressFlag = 1;
+  }
+}
 
 /* USER CODE END 2 */

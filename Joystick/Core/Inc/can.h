@@ -43,7 +43,7 @@ void MX_CAN_Init(void);
 /* USER CODE BEGIN Prototypes */
 
 void CAN1_Filter_Init(void);
-HAL_StatusTypeDef CAN1_Transmit(CAN_TxHeaderTypeDef *TxHeader, uint8_t *Data);
+HAL_StatusTypeDef CAN1_Transmit(uint32_t ID, uint8_t Length, uint8_t *Data);
 HAL_StatusTypeDef CAN1_Receive(uint32_t *ID, uint8_t *Length, uint8_t *Data);
 uint8_t CAN1_ReceiveFlag(void);
 

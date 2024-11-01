@@ -1,6 +1,9 @@
 #include "joystick.h"
 
-// Status to track data reception (bit 0: first 4 joystick values, bit 1: last 4 joystick values, bit 2: buttons)
+// Status to track data reception 
+// bit 0: The value of first 4 sticks
+// bit 1: The value of last 4 sticks
+// bit 2: The status of buttons
 volatile uint8_t js_in_status = 0;
 
 int16_t js_axes_in[8];
@@ -9,6 +12,54 @@ uint16_t js_buttons_in;
 uint8_t joystick_buttons_row[8];
 
 static int j = 0;
+
+void js_buttons_handle(void)
+{
+	// Check js_buttons_in bits 10 to 13
+	if (js_buttons_in & (1 << 9)) // Check if bit 10 is set (粗调正转 10°)
+	{
+		if (control_value > 80)
+			control_value += 4;
+		else
+			control_value += 10;
+
+		if (control_value > 84)
+			control_value = 84;
+
+		Motor_SetTargetPosition(&Motor9, control_value); // 粗调正转
+		printf("Bit 10: Set Position %d\r\n", control_value);
+	}
+	if (js_buttons_in & (1 << 10)) // Check if bit 11 is set (微调正转 1°)
+	{
+		control_value += 1;
+
+		if (control_value > 84)
+			control_value = 84;
+
+		Motor_SetTargetPosition(&Motor9, control_value); // 微调正转
+		printf("Bit 11: Set Position %d\r\n", control_value);
+	}
+	if (js_buttons_in & (1 << 11)) // Check if bit 12 is set (粗调反转 10°)
+	{
+		control_value -= 10;
+
+		if (control_value <= 0)
+			control_value = 0;
+
+		Motor_SetTargetPosition(&Motor9, control_value); // 粗调反转
+		printf("Bit 12: Set Position %d\r\n", control_value);
+	}
+	if (js_buttons_in & (1 << 12)) // Check if bit 13 is set (微调反转 1°)
+	{
+		control_value -= 1;
+
+		if (control_value <= 0)
+			control_value = 0;
+
+		Motor_SetTargetPosition(&Motor9, control_value); // 微调反转
+		printf("Bit 13: Set Position %d\r\n", control_value);
+	}
+}
 
 void Button_Init(void)
 {

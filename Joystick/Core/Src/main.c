@@ -104,7 +104,7 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  joystick_init();
+  JS_Init();
 
   HAL_ADCEx_Calibration_Start(&hadc1);
   if (HAL_TIM_Base_Start_IT(&htim3) != HAL_OK)
@@ -130,25 +130,11 @@ int main(void)
 
     if (ADC1_Data_Ready != 0)
     {
-      joystick_detect();
+      JS_Update();
+      JS_Transmit();
+
+      ADC1_Data_Ready = 0;
     }
-
-    Transmit();
-    Transmit_detect();
-
-    ADC1_Data_Ready = 0;
-
-    // printf("report_data[0]:%d\r\n", report_data[0]);
-    // printf("report_data[1]:%d\r\n", report_data[1]);
-    // printf("report_data[2]:%d\r\n", report_data[2]);
-    // printf("report_data[3]:%d\r\n", report_data[3]);
-    // printf("report_data[4]:%d\r\n", report_data[4]);
-    // printf("report_data[5]:%d\r\n", report_data[5]);
-    // printf("report_data[6]:%d\r\n", report_data[6]);
-    // printf("report_data[7]:%d\r\n", report_data[7]);
-    // printf("report_data[8]:%x\r\n", report_data[8]);
-
-    HAL_Delay(1);
   }
   /* USER CODE END 3 */
 }

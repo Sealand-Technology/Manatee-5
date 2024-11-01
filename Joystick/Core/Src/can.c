@@ -148,11 +148,28 @@ void CAN1_Filter_Init(void)
   }
 }
 
-HAL_StatusTypeDef CAN1_Transmit(CAN_TxHeaderTypeDef *TxHeader, uint8_t *Data)
+/**
+ * @brief  Transmit a CAN message using CAN1.
+ * @param  ID: The standard identifier for the CAN message.
+ * @param  Length: Length of the data to be transmitted (0 to 8 bytes).
+ * @param  Data: Pointer to the data array to be transmitted.
+ * @retval HAL_StatusTypeDef: Status of the transmission (HAL_OK, HAL_ERROR, etc.)
+ */
+HAL_StatusTypeDef CAN1_Transmit(uint32_t ID, uint8_t Length, uint8_t *Data)
 {
-  uint32_t pTxMailbox;
+  CAN_TxHeaderTypeDef TxHeader;
+  uint32_t TxMailbox;
 
-  return HAL_CAN_AddTxMessage(&hcan, TxHeader, Data, &pTxMailbox);
+  // Set up CAN transmit message parameters
+  TxHeader.StdId = ID;
+  TxHeader.ExtId = 0x00;
+  TxHeader.IDE = CAN_ID_STD;   // Use standard identifier
+  TxHeader.RTR = CAN_RTR_DATA; // Data frame
+  TxHeader.DLC = Length;
+  TxHeader.TransmitGlobalTime = DISABLE;
+
+  // Transmit the CAN message and return status
+  return HAL_CAN_AddTxMessage(&hcan, &TxHeader, Data, &TxMailbox);
 }
 
 /**

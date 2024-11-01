@@ -235,59 +235,56 @@ uint8_t CAN1_ReceiveFlag(void)
  */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 {
-  CAN1_Receive(&can_id, &rx_data_length, rx_data);
-
-  /*收到按键数据帧*/
-  if (can_id == 0x300)
+  /* Check if the interrupt is triggered by CAN1 */
+  if (hcan->Instance == CAN1)
   {
-    for (int i = 0; i < 8; i++)
+    /* Call CAN1_Receive to get the message */
+    if (CAN1_Receive(&can_id, &rx_data_length, rx_data) == HAL_OK)
     {
-      joystick_buttons_row[i] = rx_data[i];
-    }
-  }
+      /* Successfully received a message */
+      if (can_id == 0x300U && rx_data_length == 8)
+      {
+        // Process the received data as the first four stick values
+        for (uint8_t i = 0; i < 4; i++)
+        {
+          js_axes_in[i] = (int16_t)((rx_data[2 * i] << 8) | rx_data[2 * i + 1]);
+        }
 
-  /*收到前4个电压值*/
-  if (can_id == 0x400)
-  {
-    //	  	printf("report_data_Low success\r\n");
-    for (int i = 0; i < 4; i++)
-    {
-      js_axes_in[i] = ((uint16_t)rx_data[i] << 8) | rx_data[i + 4];
-    }
-  }
+        // Set bit 0 indicating first set of joystick axes received
+        js_in_status |= 0x01;
+      }
+      else if (can_id == 0x301U && rx_data_length == 8)
+      {
+        // Process the received data as the last four stick values
+        for (uint8_t i = 0; i < 4; i++)
+        {
+          js_axes_in[4 + i] = (int16_t)((rx_data[2 * i] << 8) | rx_data[2 * i + 1]);
+        }
 
-  /*收到后四个电压值*/
-  if (can_id == 0x500)
-  {
-    //	  	printf("report_data_High success\r\n");
-    for (int i = 0; i < 4; i++)
-    {
-      js_axes_in[i + 4] = ((uint16_t)rx_data[i] << 8) | rx_data[i + 4];
-    }
-  }
+        // Set bit 1 indicating second set of joystick axes received
+        js_in_status |= 0x02;
+      }
+      else if (can_id == 0x302U && rx_data_length == 2)
+      {
+        // Process the received data as 16 buttons input (only use the first 2 bytes)
+        js_buttons_in = (uint16_t)((rx_data[0] << 8) | rx_data[1]);
 
-  // motorID = CAN_ID - 0x580
-  can_id = can_id - 0x580U;
+        // Set bit 2 indicating buttons data received
+        js_in_status |= 0x04;
+      }
 
-  if (rx_data_length == 8)
-  {
-    if (can_id == Motor9.motorID)
-    {
+      /* Check if all joystick axes and buttons data are received */
+      if ((js_in_status & 0x07) == 0x07)
+      {
+        // Send manual control message to ArduSub
+        //FMU_Send_Manual_Control_Msg(MAVLINK_COMM_0, js_axes_in, &js_buttons_in);
 
-      Motor_Feedback_Handler(&Motor9, rx_data);
+        //js_buttons_handle();
+
+        // Reset status after processing
+        js_in_status = 0;
+      }
     }
-    else if (can_id == Motor10.motorID)
-    {
-      Motor_Feedback_Handler(&Motor10, rx_data);
-    }
-    else
-    {
-      //      printf("CAN1 received nonexistent motor id.\r\n");
-    }
-  }
-  else
-  {
-    //	printf("CAN1 received the feedback data with wrong length.\r\n");
   }
 }
 

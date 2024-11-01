@@ -99,14 +99,14 @@ int main(void)
 
   HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
   HAL_CAN_Start(&hcan);
-  Motors_Init();
-  FMU_MAVLink_Init(&huart1, MAVLINK_COMM_0);
+  //Motors_Init();
+  //FMU_MAVLink_Init(&huart1, MAVLINK_COMM_0);
 
   // FMU_Send_Reboot_Msg(MAVLINK_COMM_0);
   // FMU_Send_Reboot_Msg(MAVLINK_COMM_0);
 
-  FMU_Send_Arm_Msg(MAVLINK_COMM_0);
-  FMU_Send_Arm_Msg(MAVLINK_COMM_0);
+  //FMU_Send_Arm_Msg(MAVLINK_COMM_0);
+  //FMU_Send_Arm_Msg(MAVLINK_COMM_0);
 
   /* USER CODE END 2 */
 
@@ -118,13 +118,14 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 
-    for (int i = 0; i < 8; i++)
-    {
-      printf("%d ", js_axes_in[i] + js_axes_trim_offset[i]);
-    }
-    printf("\r\n");
-
-    FMU_Send_Manual_Control_Msg(MAVLINK_COMM_0, js_axes_in, &js_buttons_in);
+    // for (int i = 0; i < 8; i++)
+    // {
+    //   printf("%d ", js_axes_in[i] + js_axes_trim_offset[i]);
+    // }
+    // printf("\r\n");
+    // printf("%d ", js_buttons_in);
+    // printf("\r\n");
+    //FMU_Send_Manual_Control_Msg(MAVLINK_COMM_0, js_axes_in, &js_buttons_in);
   }
   /* USER CODE END 3 */
 }
