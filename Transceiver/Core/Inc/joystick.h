@@ -28,11 +28,8 @@ extern uint8_t joystick_buttons_row[8];
 
 /* Prototypes ----------------------------------------------------------------*/
 
-void js_buttons_handle(void);
-
-void Button_Init(void);
-uint16_t Get_Button_Val(void);
-void Button_detect(uint16_t	Button_Val);
+uint8_t JS_Buttons_Detect(void);
+void JS_Buttons_Handle(void);
 
 
 #ifdef __cplusplus

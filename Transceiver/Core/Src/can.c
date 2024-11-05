@@ -242,7 +242,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     if (CAN1_Receive(&can_id, &rx_data_length, rx_data) == HAL_OK)
     {
       /* Successfully received a message */
-      if (can_id == 0x300U && rx_data_length == 8)
+      if (can_id == 0x750U && rx_data_length == 8)
       {
         // Process the received data as the first four stick values
         for (uint8_t i = 0; i < 4; i++)
@@ -253,7 +253,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         // Set bit 0 indicating first set of joystick axes received
         js_in_status |= 0x01;
       }
-      else if (can_id == 0x301U && rx_data_length == 8)
+      else if (can_id == 0x751U && rx_data_length == 8)
       {
         // Process the received data as the last four stick values
         for (uint8_t i = 0; i < 4; i++)
@@ -264,7 +264,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         // Set bit 1 indicating second set of joystick axes received
         js_in_status |= 0x02;
       }
-      else if (can_id == 0x302U && rx_data_length == 2)
+      else if (can_id == 0x752U && rx_data_length == 2)
       {
         // Process the received data as 16 buttons input (only use the first 2 bytes)
         js_buttons_in = (uint16_t)((rx_data[0] << 8) | rx_data[1]);
@@ -272,14 +272,24 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         // Set bit 2 indicating buttons data received
         js_in_status |= 0x04;
       }
+      else if (can_id - 0x580U == Motor9.motorID && rx_data_length == 8)
+      {
+        Motor_Feedback_Handler(&Motor9, rx_data);
+      }
+      else if (can_id - 0x580U == Motor10.motorID && rx_data_length == 8)
+      {
+        Motor_Feedback_Handler(&Motor10, rx_data);
+      }
+      else if (can_id - 0x580U == Motor11.motorID && rx_data_length == 8)
+      {
+        Motor_Feedback_Handler(&Motor11, rx_data);
+      }
 
       /* Check if all joystick axes and buttons data are received */
       if ((js_in_status & 0x07) == 0x07)
       {
         // Send manual control message to ArduSub
-        //FMU_Send_Manual_Control_Msg(MAVLINK_COMM_0, js_axes_in, &js_buttons_in);
-
-        //js_buttons_handle();
+        // FMU_Send_Manual_Control_Msg(MAVLINK_COMM_0, js_axes_in, &js_buttons_in);
 
         // Reset status after processing
         js_in_status = 0;

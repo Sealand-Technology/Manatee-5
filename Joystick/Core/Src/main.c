@@ -135,6 +135,7 @@ int main(void)
 
       ADC1_Data_Ready = 0;
     }
+		HAL_Delay(5);
   }
   /* USER CODE END 3 */
 }

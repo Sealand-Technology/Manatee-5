@@ -4,8 +4,6 @@ Motor_t Motor9;
 Motor_t Motor10;
 Motor_t Motor11;
 
-volatile uint8_t control_value = 0;
-
 /**
  * @brief  Initializes the motors.
  * @retval None
@@ -16,25 +14,27 @@ void Motors_Init(void)
   Motor9.motorID = 0x09;
   Motor9.status = MOTOR_STATUS_READY;
 
-  Motor_SetControlType(&Motor9, MOTOR_CONTROL_TYPE_BRAKE);
+  // printf("Motor9 Initing.\r\n");
 
   Motor_SetControlType(&Motor9, MOTOR_CONTROL_TYPE_POSITION);
+  HAL_Delay(100);
 
   Motor_SetAccelerationUnit(&Motor9, MOTOR_ACCELERATION_UNIT_RAD_S2);
+  HAL_Delay(100);
 
   Motor_SetSpeedUnit(&Motor9, MOTOR_SPEED_UNIT_RPM);
+  HAL_Delay(100);
 
-  Motor_SetMaxSpeed(&Motor9, 5000);
+  Motor_SetMaxSpeed(&Motor9, 3510);
+  HAL_Delay(100);
 
-  Motor_SetSpeed(&Motor9, 3000);
+  Motor_SetSpeed(&Motor9, 702);
+  HAL_Delay(100);
 
   Motor_SetPositionType(&Motor9, MOTOR_POSITION_TYPE_ABSOLUTE);
+  HAL_Delay(100);
 
-  Motor_ResetPosition(&Motor9);
-
-  Motor9.targetPosition = 0;
-
-  printf("Motor9 Inited.\r\n");
+  // printf("Motor9 Inited.\r\n");
 
   // /* Motor10 Configuration */
   // Motor10.motorID = 0x0A;
@@ -249,7 +249,6 @@ void Motor_SetTargetPosition(Motor_t *motor, int32_t targetPosition)
                      (targetPosition >> 16) & 0xFF,
                      (targetPosition >> 24) & 0xFF};
 
-  motor->targetPosition = targetPosition;
   motor->status = MOTOR_STATUS_BUSY;
   CAN1_Transmit(canID, 8, data);
 
@@ -409,7 +408,7 @@ void Motor_Feedback_Handler(Motor_t *motor, uint8_t *feedback_data)
     break;
   default:
     motor->status = MOTOR_STATUS_ERROR;
-    printf("CAN1 received the feedback data with wrong status code.\r\n");
+    // printf("CAN1 received the feedback data with wrong status code.\r\n");
     break;
   }
 }
@@ -429,24 +428,24 @@ void Motor_WriteFeedback_Handler(Motor_t *motor, uint8_t *feedback_data)
     if (feedback_data[3] == 0x01)
     {
       motor->status = MOTOR_STATUS_READY;
-      printf("All parameters were saved successfully.\r\n");
+      // printf("All parameters were saved successfully.\r\n");
     }
     break;
   case 0x2000:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor control type was successfully set.\r\n");
+    // printf("Motor control type was successfully set.\r\n");
     break;
   case 0x2001:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor control quantity was successfully set.\r\n");
+    // printf("Motor control quantity was successfully set.\r\n");
     break;
   case 0x2002:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor position type was successfully set.\r\n");
+    // printf("Motor position type was successfully set.\r\n");
     break;
   case 0x2003:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor target position was successfully set.\r\n");
+    // printf("Motor target position was successfully set.\r\n");
     break;
   // case 0x2004:
   //   /* code */
@@ -462,23 +461,23 @@ void Motor_WriteFeedback_Handler(Motor_t *motor, uint8_t *feedback_data)
   //   break;
   case 0x2008:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor maximum speed was successfully set.\r\n");
+    // printf("Motor maximum speed was successfully set.\r\n");
     break;
   case 0x200A:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor speed unit was successfully set.\r\n");
+    // printf("Motor speed unit was successfully set.\r\n");
     break;
   case 0x200B:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor acceleration unit was successfully set.\r\n");
+    // printf("Motor acceleration unit was successfully set.\r\n");
     break;
   case 0x200F:
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor position count was successfully reset.\r\n");
+    // printf("Motor position count was successfully reset.\r\n");
     break;
   default:
     motor->status = MOTOR_STATUS_ERROR;
-    printf("CAN1 received the write feedback data with wrong dictionary index.\r\n");
+    // printf("CAN1 received the write feedback data with wrong dictionary index.\r\n");
     break;
   }
 }
@@ -513,7 +512,7 @@ void Motor_ReadFeedback_Handler(Motor_t *motor, uint8_t *feedback_data, uint8_t 
   case 0x2105:
     motor->position = (int32_t)data;
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor absolute position = %d\r\n", motor->position);
+    // printf("Motor absolute position = %d\r\n", motor->position);
     break;
   // case 0x2106:
   //   /* code */
@@ -526,7 +525,7 @@ void Motor_ReadFeedback_Handler(Motor_t *motor, uint8_t *feedback_data, uint8_t 
   case 0x210A:
     motor->speed = (int32_t)data;
     motor->status = MOTOR_STATUS_READY;
-    printf("Motor speed = %d\r\n", motor->speed);
+    // printf("Motor speed = %d\r\n", motor->speed);
     break;
   // case 0x210B:
   //   /* code */
@@ -557,7 +556,7 @@ void Motor_ReadFeedback_Handler(Motor_t *motor, uint8_t *feedback_data, uint8_t 
     break;
   default:
     motor->status = MOTOR_STATUS_ERROR;
-    printf("CAN1 received the read feedback data with wrong dictionary index.\r\n");
+    // printf("CAN1 received the read feedback data with wrong dictionary index.\r\n");
     break;
   }
 }
@@ -576,7 +575,6 @@ void Motor_AbortFeedback_Handler(Motor_t *motor, uint8_t *feedback_data)
   printf("Abort Code:0x");
   for (uint8_t i = 7; i >= 4; i--)
   {
-    
     printf("%02X", feedback_data[i]);
   }
   printf("\r\n");

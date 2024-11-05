@@ -49,18 +49,15 @@ typedef struct {
   uint8_t controlType;
   uint8_t accelerationUnit;
   uint8_t speedUnit;
+  uint8_t positionType;
   uint16_t maxSpeed;
   int32_t speed;
-  uint8_t positionType;
   int32_t position;
-  int32_t targetPosition;
-}Motor_t;
+} Motor_t;
 
 extern Motor_t Motor9;
 extern Motor_t Motor10;
 extern Motor_t Motor11;
-
-extern volatile uint8_t control_value;
 
 /* Prototypes ------------------------------------------------------------------*/
 

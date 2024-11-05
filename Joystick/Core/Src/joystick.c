@@ -101,7 +101,7 @@ void JS_Transmit(void)
 	}
 
 	// Transmit the voltage value of the first four sticks
-	CAN1_Transmit(0x300U, 8, tx_data);
+	CAN1_Transmit(0x750U, 8, tx_data);
 
 	// Second set of four uint16_t values: report_data[4] to report_data[7]
 	for (uint8_t i = 0; i < 4; i++)
@@ -111,7 +111,7 @@ void JS_Transmit(void)
 	}
 
 	// Transmit the voltage value of the last four sticks
-	CAN1_Transmit(0x301U, 8, tx_data);
+	CAN1_Transmit(0x751U, 8, tx_data);
 
 	// Process the last single uint16_t value, report_data[8]
 	tx_data[0] = (report_data[8] >> 8) & 0xFF; // Store high byte
@@ -120,5 +120,5 @@ void JS_Transmit(void)
 	// Transmit the status of the buttons
 	// 0: Release
 	// 1: Press
-	CAN1_Transmit(0x302U, 2, tx_data);
+	CAN1_Transmit(0x752U, 2, tx_data);
 }
