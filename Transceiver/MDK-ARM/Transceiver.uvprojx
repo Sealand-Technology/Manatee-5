@@ -391,6 +391,16 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
+              <FileName>fmu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\fmu.c</FilePath>
+            </File>
+            <File>
+              <FileName>joystick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\joystick.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -401,24 +411,14 @@
               <FilePath>../Core/Src/gpio.c</FilePath>
             </File>
             <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>../Core/Src/usart.c</FilePath>
-            </File>
-            <File>
               <FileName>can.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/can.c</FilePath>
             </File>
             <File>
-              <FileName>fmu.c</FileName>
+              <FileName>usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Core\Src\fmu.c</FilePath>
-            </File>
-            <File>
-              <FileName>joystick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\joystick.c</FilePath>
+              <FilePath>../Core/Src/usart.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_it.c</FileName>

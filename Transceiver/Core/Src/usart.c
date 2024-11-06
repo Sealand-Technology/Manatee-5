@@ -202,7 +202,7 @@ int fputc(int ch, FILE *f)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-  // 接收通道X的消息
+  // Receive messages from channel X
   stm32_Mavlink_UARTRxCpltCallback(huart, MAVLINK_COMM_0);
 }
 

@@ -391,6 +391,11 @@
           <GroupName>Application/User/Core</GroupName>
           <Files>
             <File>
+              <FileName>joystick.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\joystick.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/main.c</FilePath>
@@ -424,11 +429,6 @@
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>joystick.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Core\Src\joystick.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_it.c</FileName>
