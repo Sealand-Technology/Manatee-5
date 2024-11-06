@@ -11,7 +11,7 @@ Motor_t Motor11;
 void Motors_Init(void)
 {
   /* Motor9 Configuration */
-  Motor9.motorID = 0x09;
+  Motor9.motorID = MOTOR9_ID;
   Motor9.status = MOTOR_STATUS_READY;
 
   // printf("Motor9 Initing.\r\n");
@@ -37,7 +37,7 @@ void Motors_Init(void)
   // printf("Motor9 Inited.\r\n");
 
   // /* Motor10 Configuration */
-  // Motor10.motorID = 0x0A;
+  // Motor10.motorID = MOTOR10_ID;
   // Motor10.status = MOTOR_STATUS_READY;
 
   // Motor_SetControlType(&Motor10, MOTOR_CONTROL_TYPE_POSITION);
@@ -56,8 +56,8 @@ void Motors_Init(void)
   
   // Motor10.targetPosition = 0;
   
-    // /* Motor11 Configuration */
-  // Motor11.motorID = 0x0B;
+  // /* Motor11 Configuration */
+  // Motor11.motorID = MOTOR11_ID;
   // Motor11.status = MOTOR_STATUS_READY;
 
   // Motor_SetControlType(&Motor11, MOTOR_CONTROL_TYPE_POSITION);

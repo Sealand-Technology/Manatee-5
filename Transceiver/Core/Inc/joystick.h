@@ -19,12 +19,9 @@ extern "C" {
 #define JS_AXES_OUT_MIN  -1000
 #define JS_AXES_OUT_MAX   1000
 
-extern volatile uint8_t js_in_status;
 extern int16_t js_axes_in[8];
 extern int16_t js_axes_trim_offset[8];
 extern uint16_t js_buttons_in;
-extern uint8_t joystick_buttons_row[8];
-
 
 /* Prototypes ----------------------------------------------------------------*/
 

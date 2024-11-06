@@ -111,7 +111,7 @@ int main(void)
   {
     Error_Handler();
   }
-  if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADC_data[0], 8 * sizeof(uint16_t)) != HAL_OK)
+  if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADC_data[0], 8) != HAL_OK)
   {
     Error_Handler();
   }
@@ -134,6 +134,12 @@ int main(void)
       JS_Transmit();
 
       ADC1_Data_Ready = 0;
+
+      // for (uint8_t i = 0; i < 8; i++)
+      // {
+      //   printf("%d ", report_data[i]);
+      // }
+      // printf("\r\n");
     }
 		HAL_Delay(5);
   }

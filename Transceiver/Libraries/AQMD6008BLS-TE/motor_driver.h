@@ -14,6 +14,11 @@ extern "C" {
 
 /* Defines ------------------------------------------------------------------*/
 
+// Motor ID
+#define MOTOR9_ID   0x09
+#define MOTOR10_ID  0x0A
+#define MOTOR11_ID  0x0B
+
 // Motor status
 #define MOTOR_STATUS_READY 0x00
 #define MOTOR_STATUS_ERROR 0x01

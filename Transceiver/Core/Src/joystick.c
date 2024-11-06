@@ -1,11 +1,5 @@
 #include "joystick.h"
 
-// Status to track data reception 
-// bit 0: The value of first 4 sticks
-// bit 1: The value of last 4 sticks
-// bit 2: The status of buttons
-volatile uint8_t js_in_status = 0;
-
 int16_t js_axes_in[8] = {2048, 2048, 2048, 2048, 2048, 2048, 2048, 2048};
 int16_t js_axes_trim_offset[8] = {0, 0, 0, 0, 0, 0, 0, 0};
 uint16_t js_buttons_in = 0;
