@@ -34,6 +34,8 @@ void Motors_Init(void)
   Motor_SetPositionType(&Motor9, MOTOR_POSITION_TYPE_ABSOLUTE);
   HAL_Delay(100);
 
+  Motor_ReadAbsolutePosition(&Motor9);
+
   // printf("Motor9 Inited.\r\n");
 
   // /* Motor10 Configuration */
