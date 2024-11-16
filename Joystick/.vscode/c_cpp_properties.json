@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "LED",
+            "name": "Joystick",
             "includePath": [
                 "d:\\completing_library\\work_projects\\Turtle-1\\Joystick\\Core\\Inc",
                 "d:\\completing_library\\work_projects\\Turtle-1\\Joystick\\Drivers\\STM32F1xx_HAL_Driver\\Inc",

@@ -96,18 +96,13 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING);
+	HAL_CAN_ActivateNotification(&hcan, CAN_IT_ERROR);
   HAL_CAN_Start(&hcan);
   Motors_Init();
   
   FMU_MAVLink_Init(&huart1, MAVLINK_COMM_0);
 
-  uint8_t task_count = 0;
-  
-  // FMU_Send_Reboot_Msg(MAVLINK_COMM_0);
-  // FMU_Send_Reboot_Msg(MAVLINK_COMM_0);
-
-  // FMU_Send_Arm_Msg(MAVLINK_COMM_0);
-  // FMU_Send_Arm_Msg(MAVLINK_COMM_0);
+  uint16_t task_count = 0;
 
   /* USER CODE END 2 */
 
@@ -121,7 +116,7 @@ int main(void)
 
     FMU_Send_Manual_Control_Msg(MAVLINK_COMM_0, js_axes_in, &js_buttons_in);
     
-    if (task_count >= 4)
+    if (task_count >= 200)
     {
       Motor_ReadAbsolutePosition(&Motor9);
       task_count = 0;

@@ -36,11 +36,16 @@ extern ADC_HandleTypeDef hadc1;
 
 /* USER CODE BEGIN Private defines */
 
+extern volatile uint8_t ADC1_Data_Ready;
+extern uint16_t ADC_Data[ADC_CHANNEL_NUM];
+
 /* USER CODE END Private defines */
 
 void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+
+void ADC1_Init(void);
 
 /* USER CODE END Prototypes */
 

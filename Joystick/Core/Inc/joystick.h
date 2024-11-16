@@ -11,18 +11,17 @@ extern "C" {
 #include <stdlib.h>
 
 #include "main.h"
+#include "adc.h"
 #include "gpio.h"
 #include "can.h"
-#include "usart.h"
 
 /* Defines -------------------------------------------------------------------*/
 
 extern uint16_t report_data[AXIS_NUM + BUTTONS_ENABLED];
 extern uint16_t last_report_data[AXIS_NUM];
 extern uint8_t sticks_state[AXIS_NUM];
-extern uint16_t buttons_state;
-extern uint16_t ADC_data[ADC_CHANNEL_NUM];
 extern int8_t sticks_count[AXIS_NUM];
+extern uint16_t buttons_state;
 
 /* Prototypes ----------------------------------------------------------------*/
 

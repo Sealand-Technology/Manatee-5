@@ -57,45 +57,36 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define LED1_Pin GPIO_PIN_0
-#define LED1_GPIO_Port GPIOB
-#define LED2_Pin GPIO_PIN_1
-#define LED2_GPIO_Port GPIOB
-#define KEY0_Pin GPIO_PIN_12
-#define KEY0_GPIO_Port GPIOB
-#define KEY0_EXTI_IRQn EXTI15_10_IRQn
-#define KEY1_Pin GPIO_PIN_13
-#define KEY1_GPIO_Port GPIOB
-#define KEY1_EXTI_IRQn EXTI15_10_IRQn
-#define KEY2_Pin GPIO_PIN_14
-#define KEY2_GPIO_Port GPIOB
-#define KEY2_EXTI_IRQn EXTI15_10_IRQn
-#define KEY3_Pin GPIO_PIN_15
-#define KEY3_GPIO_Port GPIOB
-#define KEY3_EXTI_IRQn EXTI15_10_IRQn
-#define BTN5_Pin GPIO_PIN_8
+#define BTN0_Pin GPIO_PIN_12
+#define BTN0_GPIO_Port GPIOB
+#define BTN1_Pin GPIO_PIN_13
+#define BTN1_GPIO_Port GPIOB
+#define BTN2_Pin GPIO_PIN_14
+#define BTN2_GPIO_Port GPIOB
+#define BTN3_Pin GPIO_PIN_15
+#define BTN3_GPIO_Port GPIOB
+#define BTN4_Pin GPIO_PIN_8
+#define BTN4_GPIO_Port GPIOA
+#define BTN5_Pin GPIO_PIN_9
 #define BTN5_GPIO_Port GPIOA
-#define BTN6_Pin GPIO_PIN_9
+#define BTN6_Pin GPIO_PIN_15
 #define BTN6_GPIO_Port GPIOA
-#define BTN7_Pin GPIO_PIN_15
-#define BTN7_GPIO_Port GPIOA
-#define BTN8_Pin GPIO_PIN_3
+#define BTN7_Pin GPIO_PIN_3
+#define BTN7_GPIO_Port GPIOB
+#define BTN8_Pin GPIO_PIN_4
 #define BTN8_GPIO_Port GPIOB
-#define BTN9_Pin GPIO_PIN_4
+#define BTN9_Pin GPIO_PIN_5
 #define BTN9_GPIO_Port GPIOB
-#define BTN10_Pin GPIO_PIN_5
+#define BTN10_Pin GPIO_PIN_6
 #define BTN10_GPIO_Port GPIOB
-#define BTN11_Pin GPIO_PIN_6
+#define BTN11_Pin GPIO_PIN_7
 #define BTN11_GPIO_Port GPIOB
-#define BTN12_Pin GPIO_PIN_7
+#define BTN12_Pin GPIO_PIN_8
 #define BTN12_GPIO_Port GPIOB
-#define BTN13_Pin GPIO_PIN_8
+#define BTN13_Pin GPIO_PIN_9
 #define BTN13_GPIO_Port GPIOB
-#define BTN14_Pin GPIO_PIN_9
-#define BTN14_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
-
 
 #define MAX_CHANGE             50
 #define DEAD_ZONE              30

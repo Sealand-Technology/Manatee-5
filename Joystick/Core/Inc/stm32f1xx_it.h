@@ -13,7 +13,7 @@
   * in the root directory of this software component.
   * If no LICENSE file comes with this software, it is provided AS-IS.
   *
- ******************************************************************************
+  ******************************************************************************
   */
 /* USER CODE END Header */
 
@@ -27,6 +27,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "adc.h"
 
 /* USER CODE END Includes */
 
@@ -56,10 +58,7 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 void DMA1_Channel1_IRQHandler(void);
-void USB_LP_CAN1_RX0_IRQHandler(void);
-void TIM3_IRQHandler(void);
-void USART3_IRQHandler(void);
-void EXTI15_10_IRQHandler(void);
+void CAN1_SCE_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

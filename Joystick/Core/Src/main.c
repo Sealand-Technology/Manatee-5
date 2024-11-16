@@ -1,20 +1,20 @@
 /* USER CODE BEGIN Header */
 /**
- ******************************************************************************
- * @file           : main.c
- * @brief          : Main program body
- ******************************************************************************
- * @attention
- *
- * Copyright (c) 2024 STMicroelectronics.
- * All rights reserved.
- *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file           : main.c
+  * @brief          : Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2024 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -50,10 +50,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
-/* Private variables ---------------------------------------------------------*/
-
-volatile uint8_t ADC1_Data_Ready = 0;
 
 /* USER CODE END PV */
 
@@ -98,9 +94,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_CAN_Init();
   MX_ADC1_Init();
   MX_TIM3_Init();
+  MX_CAN_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
@@ -111,11 +107,12 @@ int main(void)
   {
     Error_Handler();
   }
-  if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADC_data[0], 8) != HAL_OK)
+  if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADC_Data[0], 8) != HAL_OK)
   {
     Error_Handler();
   }
   
+	HAL_CAN_ActivateNotification(&hcan, CAN_IT_ERROR);
   HAL_CAN_Start(&hcan);
 
   /* USER CODE END 2 */
@@ -135,13 +132,28 @@ int main(void)
 
       ADC1_Data_Ready = 0;
 
+      // /* Print the value of 8 sticks */
       // for (uint8_t i = 0; i < 8; i++)
       // {
       //   printf("%d ", report_data[i]);
       // }
       // printf("\r\n");
+
+      // /* Print the value of 14 buttons */
+      // for (int8_t bit = 15; bit >= 0; bit--)
+      // {
+      //   if (report_data[8] & (1 << bit))
+      //   {
+      //     printf("1");
+      //   }
+      //   else
+      //   {
+      //     printf("0");
+      //   }
+      // }
+      // printf("\r\n");
     }
-		HAL_Delay(5);
+    HAL_Delay(5);
   }
   /* USER CODE END 3 */
 }

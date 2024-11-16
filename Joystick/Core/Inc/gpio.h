@@ -34,11 +34,6 @@ extern "C" {
 
 /* USER CODE BEGIN Private defines */
 
-extern uint8_t KEY0_PressFlag;
-extern uint8_t KEY1_PressFlag;
-extern uint8_t KEY2_PressFlag;
-extern uint8_t KEY3_PressFlag;
-
 /* USER CODE END Private defines */
 
 void MX_GPIO_Init(void);

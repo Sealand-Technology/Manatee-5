@@ -6,7 +6,7 @@ Joystick/.vscode/keil_project_properties.json
 Joystick/.vscode/keil-assistant.log
 Joystick/MDK-ARM/DebugConfig
 Joystick/MDK-ARM/RTE
-Joystick/MDK-ARM/LED
+Joystick/MDK-ARM/Joystick
 Joystick/MDK-ARM/*.lst
 Joystick/MDK-ARM/*.23833
 Joystick/MDK-ARM/*.86130

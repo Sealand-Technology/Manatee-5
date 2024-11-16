@@ -22,6 +22,9 @@
 
 /* USER CODE BEGIN 0 */
 
+volatile uint8_t ADC1_Data_Ready;
+uint16_t ADC_Data[ADC_CHANNEL_NUM];
+
 /* USER CODE END 0 */
 
 ADC_HandleTypeDef hadc1;
@@ -129,6 +132,8 @@ void MX_ADC1_Init(void)
   }
   /* USER CODE BEGIN ADC1_Init 2 */
 
+  ADC1_Init();
+
   /* USER CODE END ADC1_Init 2 */
 
 }
@@ -217,5 +222,14 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 }
 
 /* USER CODE BEGIN 1 */
+
+void ADC1_Init(void)
+{
+  ADC1_Data_Ready = 0;
+  for (uint8_t i = 0; i < ADC_CHANNEL_NUM; i++)
+  {
+    ADC_Data[i] = 2048;
+  }
+}
 
 /* USER CODE END 1 */

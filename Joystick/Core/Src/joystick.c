@@ -3,16 +3,15 @@
 uint16_t report_data[AXIS_NUM + BUTTONS_ENABLED];
 uint16_t last_report_data[AXIS_NUM];
 uint8_t sticks_state[AXIS_NUM];
-uint16_t buttons_state;
-uint16_t ADC_data[ADC_CHANNEL_NUM];
 int8_t sticks_count[AXIS_NUM];
+uint16_t buttons_state;
 
 uint8_t tx_data[8];
 
 void JS_Init(void)
 {
 	// 初始化按键状态
-	buttons_state = 0x0000;
+	buttons_state = 0;
 
 	for (uint8_t i = 0; i < AXIS_NUM; i++)
 	{
@@ -33,7 +32,7 @@ void JS_Update(void)
 
 	for (uint8_t i = 0; i < AXIS_NUM; i++)
 	{
-		uint16_t adc_value = ADC_data[i];
+		uint16_t adc_value = ADC_Data[i];
 
 		int16_t diff = adc_value - last_report_data[i];
 		if (abs(diff) < DEAD_ZONE)
