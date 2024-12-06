@@ -171,8 +171,7 @@ void AP_Motors6DOF::setup_motors(motor_frame_class frame_class, motor_frame_type
         add_motor_raw_6dof(AP_MOTORS_MOT_6,     -1.0f,          0,              0,              -1.0f,              0,                  0,                      0,                      0,                 6);
         break;
 
-    case SUB_FRAME_CUSTOM:
-        // Put your custom motor setup here
+    case SUB_FRAME_MANATEE_5:
         add_motor_raw_6dof(AP_MOTORS_MOT_1,     -1.0f,          -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 1);
         add_motor_raw_6dof(AP_MOTORS_MOT_2,     1.0f,           -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 2);
         add_motor_raw_6dof(AP_MOTORS_MOT_3,     -1.0f,          1.0f,           0,              -1.0f,              0,                  0,                      0,                      0,                 3);
@@ -181,6 +180,19 @@ void AP_Motors6DOF::setup_motors(motor_frame_class frame_class, motor_frame_type
         add_motor_raw_6dof(AP_MOTORS_MOT_6,     0,              0,              -1.0f,          0,                  1.0f,               0,                      0,                      0,                 6);
         add_motor_raw_6dof(AP_MOTORS_MOT_7,     0,              0,              0,              0,                  0,                  0,                   1.0f,                      1.0f,              7);
         add_motor_raw_6dof(AP_MOTORS_MOT_8,     0,              0,              0,              0,                  0,                  0,                   1.0f,                      -1.0f,             8);
+        break;
+    
+    case SUB_FRAME_MANATEE_5_8THR:
+        add_motor_raw_6dof(AP_MOTORS_MOT_1,     -1.0f,          -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 1);
+        add_motor_raw_6dof(AP_MOTORS_MOT_2,     1.0f,           -1.0f,          0,              -1.0f,              0,                  0,                      0,                      0,                 2);
+        add_motor_raw_6dof(AP_MOTORS_MOT_3,     -1.0f,          1.0f,           0,              -1.0f,              0,                  0,                      0,                      0,                 3);
+        add_motor_raw_6dof(AP_MOTORS_MOT_4,     1.0f,           1.0f,           0,              -1.0f,              0,                  0,                      0,                      0,                 4);
+        add_motor_raw_6dof(AP_MOTORS_MOT_5,     0,              0,              1.0f,           0,                  1.0f,               0,                      0,                      0,                 5);
+        add_motor_raw_6dof(AP_MOTORS_MOT_6,     0,              0,              -1.0f,          0,                  1.0f,               0,                      0,                      0,                 6);
+        add_motor_raw_6dof(AP_MOTORS_MOT_7,     0,              0,              0,              0,                  0,                  0,                   1.0f,                      1.0f,              7);
+        add_motor_raw_6dof(AP_MOTORS_MOT_8,     0,              0,              0,              0,                  0,                  0,                   1.0f,                      -1.0f,             8);
+        add_motor_raw_6dof(AP_MOTORS_MOT_9,     0,              0,              1.0f,           0,                  1.0f,               0,                      0,                      0,                 9);
+        add_motor_raw_6dof(AP_MOTORS_MOT_10,    0,              0,              -1.0f,          0,                  1.0f,               0,                      0,                      0,                10);
         break;
 
     case SUB_FRAME_SIMPLEROV_3:
@@ -297,7 +309,7 @@ void AP_Motors6DOF::output_armed_stabilizing()
         output_armed_stabilizing_vectored();
     } else if ((sub_frame_t)_last_frame_class == SUB_FRAME_VECTORED_6DOF) {
         output_armed_stabilizing_vectored_6dof();
-    } else if ((sub_frame_t)_last_frame_class == SUB_FRAME_CUSTOM) {
+    } else if ((sub_frame_t)_last_frame_class == SUB_FRAME_MANATEE_5 || (sub_frame_t)_last_frame_class == SUB_FRAME_MANATEE_5_8THR) {
         output_armed_stabilizing_custom();
     } else {
         uint8_t i;                          // general purpose counter
