@@ -35,6 +35,10 @@ void Sub::init_joystick()
 
     set_mode(MANUAL, MODE_REASON_TX_COMMAND); // Initialize flight mode
 
+    // Initialize the PWM output of servo3
+    SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
+    ServoRelayEvents.do_set_servo(SERVO_CHAN_3, chan->get_trim());   // 1-indexed
+
     if (g.numGainSettings < 1) {
         g.numGainSettings.set_and_save(1);
     }
