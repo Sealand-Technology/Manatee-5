@@ -151,6 +151,29 @@ const AP_Param::Info Sub::var_info[] = {
     // @User: Standard
     GSCALAR(failsafe_pilot_input_timeout, "FS_PILOT_TIMEOUT", 3.0f),
 
+    // @Param: BATT_FS_LOW_ACT
+    // @DisplayName: Low battery failsafe action
+    // @Description: What action the vehicle should perform if it hits a low battery failsafe
+    // @Values: 0:None, 2:Disarm, 3:Enter surface mode
+    // @User: Standard
+    GSCALAR(failsafe_battery_enabled, "BATT_FS_LOW_ACT", 0),
+
+    // @Param: BATT_LOW_VOLT
+    // @DisplayName: Low battery voltage
+    // @Description: Battery voltage that triggers a low battery failsafe. Set to 0 to disable. If the battery voltage drops below this voltage continuously for more then the period specified by the @PREFIX@LOW_TIMER parameter then the vehicle will perform the failsafe specified by the @PREFIX@FS_LOW_ACT parameter.
+    // @Units: V
+    // @Increment: 0.1
+    // @User: Standard
+    GSCALAR(fs_batt_voltage, "BATT_LOW_VOLT", 0.0f),
+
+    // @Param: BATT_LOW_MAH
+    // @DisplayName: Low battery capacity
+    // @Description: Battery capacity at which the low battery failsafe is triggered. Set to 0 to disable battery remaining failsafe. If the battery capacity drops below this level the vehicle will perform the failsafe specified by the @PREFIX@FS_LOW_ACT parameter.
+    // @Units: mAh
+    // @Increment: 50
+    // @User: Standard
+    GSCALAR(fs_batt_mah, "BATT_LOW_MAH", 0.0f),
+
     // @Param: XTRACK_ANG_LIM
     // @DisplayName: Crosstrack correction angle limit
     // @Description: Maximum allowed angle (in degrees) between current track and desired heading during waypoint navigation

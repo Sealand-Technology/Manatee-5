@@ -235,6 +235,10 @@ public:
     AP_Int8         failsafe_pilot_input;       // pilot input failsafe behavior
     AP_Float        failsafe_pilot_input_timeout;
 
+    AP_Int8         failsafe_battery_enabled;   // action to preform on a low battery failsafe
+    AP_Float        fs_batt_voltage;            // voltage level used to trigger a low battery failsafe
+    AP_Float        fs_batt_mah;                // capacity level used to trigger a low battery failsafe
+
     AP_Int8         xtrack_angle_limit;
 
     AP_Int8         wp_yaw_behavior;            // controls how the autopilot controls yaw during missions
