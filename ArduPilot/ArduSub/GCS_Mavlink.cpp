@@ -137,6 +137,10 @@ bool GCS_MAVLINK_Sub::send_info()
     CHECK_PAYLOAD_SIZE(NAMED_VALUE_FLOAT);
     send_named_float("PilotGain", sub.gain);
 
+    float brush_gain = (hal.rcout->read(10) - 1500) / 400.0f;
+    CHECK_PAYLOAD_SIZE(NAMED_VALUE_FLOAT);
+    send_named_float("BrushGain", brush_gain);
+
     CHECK_PAYLOAD_SIZE(NAMED_VALUE_FLOAT);
     send_named_float("InputHold", sub.input_hold_engaged);
 

@@ -51,6 +51,9 @@ void Sub::init_joystick()
     }
 
     gain = constrain_float(gain, 0.1, 1.0);
+
+    // Initialize the rotational speed of the electric brush plate
+    brush_speed = 0;
 }
 
 void Sub::transform_manual_control_to_rc_override(int16_t x, int16_t y, int16_t z, int16_t r, int16_t rx, int16_t ry, int16_t rz, int16_t rr, uint16_t buttons)
@@ -150,8 +153,13 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         arming.arm(AP_Arming::Method::MAVLINK);
         break;
     case JSButton::button_function_t::k_disarm:
+    {
         arming.disarm();
         zTrim = 0;
+        brush_speed = 0;
+        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
+        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, chan->get_trim());   // 1-indexed
+    }
         break;
 
     case JSButton::button_function_t::k_mode_manual:
@@ -541,18 +549,26 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
 
     case JSButton::button_function_t::k_servo_3_inc:
     {
-        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
-        uint16_t pwm_out = hal.rcout->read(SERVO_CHAN_3 - 1); // 0-indexed
-        pwm_out = constrain_int16(pwm_out + 50, chan->get_output_min(), chan->get_output_max());
-        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, pwm_out); // 1-indexed
+        if(!motors.armed()) {
+            break;
+        }
+        if (!held) {
+            if (brush_speed < 400) {
+                brush_speed += 40;
+            }
+        }
     }
         break;
     case JSButton::button_function_t::k_servo_3_dec:
     {
-        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
-        uint16_t pwm_out = hal.rcout->read(SERVO_CHAN_3 - 1); // 0-indexed
-        pwm_out = constrain_int16(pwm_out - 50, chan->get_output_min(), chan->get_output_max());
-        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, pwm_out); // 1-indexed
+        if(!motors.armed()) {
+            break;
+        }
+        if (!held) {
+            if (brush_speed > -400) {
+                brush_speed -= 40;
+            }
+        }
     }
         break;
     case JSButton::button_function_t::k_servo_3_min:
@@ -571,8 +587,7 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         break;
     case JSButton::button_function_t::k_servo_3_center:
     {
-        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
-        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, chan->get_trim()); // 1-indexed
+        brush_speed = 0;
     }
         break;
 

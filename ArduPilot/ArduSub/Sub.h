@@ -407,6 +407,9 @@ private:
     // handle repeated servo and relay events
     AP_ServoRelayEvents ServoRelayEvents;
 
+    // The rotational speed of the electric brush plate (-400~400)
+    int16_t brush_speed;
+
     // Camera
 #if CAMERA == ENABLED
     AP_Camera camera{MASK_LOG_CAMERA, current_loc};

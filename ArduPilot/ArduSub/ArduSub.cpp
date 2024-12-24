@@ -268,6 +268,18 @@ void Sub::one_hz_loop()
         Log_Write_Data(DATA_AP_STATE, ap.value);
     }
 
+    /* Control the speed of the electric brush plate */
+    const uint8_t SERVO_CHAN_3 = 11; // Pixhawk Aux3
+    SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
+    uint16_t pwm_out = hal.rcout->read(SERVO_CHAN_3 - 1);            // 0-indexed
+    if (chan->get_trim() + brush_speed > pwm_out) {
+        pwm_out += 40;
+    } else if (chan->get_trim() + brush_speed < pwm_out) {
+        pwm_out -= 40;
+    }
+    pwm_out = constrain_int16(pwm_out, chan->get_output_min(), chan->get_output_max());
+    ServoRelayEvents.do_set_servo(SERVO_CHAN_3, pwm_out); // 1-indexed
+
     if (!motors.armed()) {
         // make it possible to change ahrs orientation at runtime during initial config
         ahrs.update_orientation();
