@@ -178,6 +178,9 @@ void Sub::update_batt_compass()
 // should be run at 10hz
 void Sub::ten_hz_logging_loop()
 {
+    // Control the electric brush plate
+    brush_output((uint8_t)(g.brush_channel));
+
     // log attitude data if we're not already logging at the higher rate
     if (should_log(MASK_LOG_ATTITUDE_MED) && !should_log(MASK_LOG_ATTITUDE_FAST)) {
         Log_Write_Attitude();
@@ -207,6 +210,35 @@ void Sub::ten_hz_logging_loop()
     if (should_log(MASK_LOG_CTUN)) {
         attitude_control.control_monitor_log();
     }
+}
+
+/**
+ * @brief Control the speed of the electric brush plate based on the desired brush speed 
+ *        and the current PWM output of the auxiliary channel.
+ * 
+ * @param brush_channel The channel number (1-indexed) controlling the brush plate.
+ * @retval None
+ */
+void Sub::brush_output(const uint8_t brush_channel)
+{
+    // Get the SRV_Channel object for the specified channel (0-indexed)
+    SRV_Channel* chan = SRV_Channels::srv_channel(brush_channel - 1);
+    
+    // Read the current PWM output of the specified channel (0-indexed)
+    uint16_t pwm_out = hal.rcout->read(brush_channel - 1);
+    
+    // Adjust the PWM output based on the desired brush speed
+    if (chan->get_trim() + brush_speed > pwm_out) {
+        pwm_out += 4;
+    } else if (chan->get_trim() + brush_speed < pwm_out) {
+        pwm_out -= 4;
+    }
+    
+    // Constrain the PWM output to the valid range for the channel
+    pwm_out = constrain_int16(pwm_out, chan->get_output_min(), chan->get_output_max());
+    
+    // Set the adjusted PWM output to the brush channel (1-indexed)
+    ServoRelayEvents.do_set_servo(brush_channel, pwm_out);
 }
 
 // twentyfive_hz_logging_loop
@@ -267,18 +299,6 @@ void Sub::one_hz_loop()
     if (should_log(MASK_LOG_ANY)) {
         Log_Write_Data(DATA_AP_STATE, ap.value);
     }
-
-    /* Control the speed of the electric brush plate */
-    const uint8_t SERVO_CHAN_3 = 11; // Pixhawk Aux3
-    SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
-    uint16_t pwm_out = hal.rcout->read(SERVO_CHAN_3 - 1);            // 0-indexed
-    if (chan->get_trim() + brush_speed > pwm_out) {
-        pwm_out += 40;
-    } else if (chan->get_trim() + brush_speed < pwm_out) {
-        pwm_out -= 40;
-    }
-    pwm_out = constrain_int16(pwm_out, chan->get_output_min(), chan->get_output_max());
-    ServoRelayEvents.do_set_servo(SERVO_CHAN_3, pwm_out); // 1-indexed
 
     if (!motors.armed()) {
         // make it possible to change ahrs orientation at runtime during initial config

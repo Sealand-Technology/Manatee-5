@@ -35,10 +35,6 @@ void Sub::init_joystick()
 
     set_mode(MANUAL, MODE_REASON_TX_COMMAND); // Initialize flight mode
 
-    // Initialize the PWM output of servo3
-    SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
-    ServoRelayEvents.do_set_servo(SERVO_CHAN_3, chan->get_trim());   // 1-indexed
-
     if (g.numGainSettings < 1) {
         g.numGainSettings.set_and_save(1);
     }
@@ -51,6 +47,10 @@ void Sub::init_joystick()
     }
 
     gain = constrain_float(gain, 0.1, 1.0);
+
+    // Initialize the PWM output of brush channel
+    SRV_Channel* chan = SRV_Channels::srv_channel((uint8_t)(g.brush_channel) - 1); // 0-indexed
+    ServoRelayEvents.do_set_servo((uint8_t)(g.brush_channel), chan->get_trim());   // 1-indexed
 
     // Initialize the rotational speed of the electric brush plate
     brush_speed = 0;
@@ -157,8 +157,8 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         arming.disarm();
         zTrim = 0;
         brush_speed = 0;
-        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
-        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, chan->get_trim());   // 1-indexed
+        SRV_Channel* chan = SRV_Channels::srv_channel((uint8_t)(g.brush_channel) - 1); // 0-indexed
+        ServoRelayEvents.do_set_servo((uint8_t)(g.brush_channel), chan->get_trim());   // 1-indexed
     }
         break;
 
@@ -549,26 +549,18 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
 
     case JSButton::button_function_t::k_servo_3_inc:
     {
-        if(!motors.armed()) {
-            break;
-        }
-        if (!held) {
-            if (brush_speed < 400) {
-                brush_speed += 40;
-            }
-        }
+        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
+        uint16_t pwm_out = hal.rcout->read(SERVO_CHAN_3 - 1); // 0-indexed
+        pwm_out = constrain_int16(pwm_out + 50, chan->get_output_min(), chan->get_output_max());
+        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, pwm_out); // 1-indexed
     }
         break;
     case JSButton::button_function_t::k_servo_3_dec:
     {
-        if(!motors.armed()) {
-            break;
-        }
-        if (!held) {
-            if (brush_speed > -400) {
-                brush_speed -= 40;
-            }
-        }
+        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
+        uint16_t pwm_out = hal.rcout->read(SERVO_CHAN_3 - 1); // 0-indexed
+        pwm_out = constrain_int16(pwm_out - 50, chan->get_output_min(), chan->get_output_max());
+        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, pwm_out); // 1-indexed
     }
         break;
     case JSButton::button_function_t::k_servo_3_min:
@@ -587,19 +579,41 @@ void Sub::handle_jsbutton_press(uint8_t button, bool shift, bool held)
         break;
     case JSButton::button_function_t::k_servo_3_center:
     {
+        SRV_Channel* chan = SRV_Channels::srv_channel(SERVO_CHAN_3 - 1); // 0-indexed
+        ServoRelayEvents.do_set_servo(SERVO_CHAN_3, chan->get_trim()); // 1-indexed
+    }
+        break;
+
+    case JSButton::button_function_t::k_brush_gain_inc:
+    {
+        if(!motors.armed()) {
+            break;
+        }
+        if (!held) {
+            if (brush_speed < 400) {
+                brush_speed += 40;
+            }
+        }
+    }
+        break;
+    case JSButton::button_function_t::k_brush_gain_dec:
+    {
+        if(!motors.armed()) {
+            break;
+        }
+        if (!held) {
+            if (brush_speed > -400) {
+                brush_speed -= 40;
+            }
+        }
+    }
+        break;
+    case JSButton::button_function_t::k_brush_gain_center:
+    {
         brush_speed = 0;
     }
         break;
 
-    case JSButton::button_function_t::k_custom_1:
-        // Not implemented
-        break;
-    case JSButton::button_function_t::k_custom_2:
-        // Not implemented
-        break;
-    case JSButton::button_function_t::k_custom_3:
-        // Not implemented
-        break;
     case JSButton::button_function_t::k_custom_4:
         // Not implemented
         break;

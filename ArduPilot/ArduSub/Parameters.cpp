@@ -304,6 +304,13 @@ const AP_Param::Info Sub::var_info[] = {
     // @Range: 0.5 4.0
     GSCALAR(throttle_gain, "JS_THR_GAIN", 1.0f),
 
+    // @Param: BRUSH_CHAN
+    // @DisplayName: Brush channel number
+    // @Description: The auxiliary channel number of the electric brush plate
+    // @User: Standard
+    // @Values: 9:AUX1, 10:AUX2, 11:AUX3, 12:AUX4, 13:AUX5, 14:AUX6
+    GSCALAR(brush_channel, "BRUSH_CHAN", 11),
+
     // @Param: FRAME_CONFIG
     // @DisplayName: Frame configuration
     // @Description: Set this parameter according to your vehicle/motor configuration

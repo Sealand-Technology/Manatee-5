@@ -133,7 +133,7 @@ const AP_Param::GroupInfo SRV_Channels::var_info[] = {
     // @Range: 25 400
     // @User: Advanced
     // @Units: Hz
-    AP_GROUPINFO("_RATE",  18, SRV_Channels, default_rate, 50),
+    AP_GROUPINFO("_RATE",  18, SRV_Channels, default_rate, 200),
 
     // @Group: _VOLZ_
     // @Path: ../AP_Volz_Protocol/AP_Volz_Protocol.cpp

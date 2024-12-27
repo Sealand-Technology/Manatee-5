@@ -210,6 +210,7 @@ public:
         k_param_lights_steps,
         k_param_pilot_speed_dn,
 
+        k_param_brush_channel,
     };
 
     AP_Int16        format_version;
@@ -276,6 +277,8 @@ public:
     AP_Float        throttle_gain;
 
     AP_Int16        lights_steps;
+
+    AP_Int8         brush_channel; // Channel number of the electric brush plate
 
     // Joystick button parameters
     JSButton        jbtn_0;

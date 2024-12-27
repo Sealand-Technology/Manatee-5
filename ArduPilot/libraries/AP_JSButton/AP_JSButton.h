@@ -97,9 +97,9 @@ public:
         k_servo_3_max_toggle    = 87,
 
         // 88-90 reserved for future functions
-        k_custom_1              = 91,           ///< custom user button 1
-        k_custom_2              = 92,           ///< custom user button 2
-        k_custom_3              = 93,           ///< custom user button 3
+        k_brush_gain_inc        = 91,           ///< Increase brush channel output
+        k_brush_gain_dec        = 92,           ///< Decrease brush channel output
+        k_brush_gain_center     = 93,           ///< Center brush channel output
         k_custom_4              = 94,           ///< custom user button 4
         k_custom_5              = 95,           ///< custom user button 5
         k_custom_6              = 96,           ///< custom user button 6
